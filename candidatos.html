@@ -65,6 +65,24 @@
 
   .ref{ margin-top:16px; padding:12px 15px; border:1px dashed var(--line); border-radius:12px; font-size:.83rem; color:var(--muted); }
   .ref b{ color:var(--ink); }
+  .cand-foot{ padding:0 15px 13px; }
+  .emailbtn{ display:inline-flex; align-items:center; gap:6px; font-size:.76rem; font-weight:700; color:var(--teal); background:transparent; border:1px solid var(--line); border-radius:8px; padding:6px 11px; cursor:pointer; }
+  .emailbtn:hover{ border-color:var(--teal-br); }
+  .emailbtn:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  .modal{ position:fixed; inset:0; background:rgba(8,18,30,.62); display:none; align-items:center; justify-content:center; padding:20px; z-index:50; }
+  .modal.open{ display:flex; }
+  .modal-card{ background:var(--surface); color:var(--ink); border:1px solid var(--line); border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,.45); max-width:640px; width:100%; max-height:88vh; overflow:auto; }
+  .modal-h{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; padding:14px 18px; border-bottom:1px solid var(--line); position:sticky; top:0; background:var(--surface); }
+  .modal-h .mt{ font-weight:800; font-size:1rem; } .modal-h .mt small{ display:block; font-weight:600; font-size:.74rem; color:var(--teal); margin-top:2px; }
+  .modal-x{ border:none; background:transparent; color:var(--muted); font-size:1.5rem; cursor:pointer; line-height:1; padding:0 6px; border-radius:6px; }
+  .modal-x:hover{ color:var(--ink); background:var(--surface2); }
+  .modal-b{ padding:16px 18px; }
+  .mfield{ font-size:.68rem; font-weight:800; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); margin-bottom:3px; }
+  .msubj{ font-size:.88rem; font-weight:700; color:var(--ink); margin-bottom:13px; }
+  .mbody{ font-size:.85rem; white-space:pre-wrap; background:var(--surface2); border:1px solid var(--line); border-radius:9px; padding:13px 14px; line-height:1.55; }
+  .mcopy{ margin-top:13px; display:inline-flex; align-items:center; gap:7px; background:var(--teal-br); color:#04201e; font-weight:800; font-size:.82rem; padding:8px 15px; border-radius:9px; border:none; cursor:pointer; }
+  .mcopy:hover{ filter:brightness(1.06); } .mcopy:focus-visible{ outline:2px solid var(--navy); outline-offset:2px; }
+  .mnote{ font-size:.72rem; color:var(--muted); margin-top:11px; }
   footer{ margin-top:30px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
   footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
 </style>
@@ -189,11 +207,68 @@
   </footer>
 </div>
 
+<div class="modal" id="emModal" role="dialog" aria-modal="true" aria-labelledby="emTitle">
+  <div class="modal-card">
+    <div class="modal-h">
+      <div class="mt" id="emTitle">Cold email <small id="emTo"></small></div>
+      <button class="modal-x" id="emClose" type="button" aria-label="Cerrar">&times;</button>
+    </div>
+    <div class="modal-b">
+      <div class="mfield">Asunto</div><div class="msubj" id="emSubj"></div>
+      <div class="mfield">Mensaje</div><div class="mbody" id="emBody"></div>
+      <button class="mcopy" id="emCopy" type="button">Copiar email</button>
+      <div class="mnote">En inglés (idioma de trabajo de los proveedores). Rellená los [corchetes] con tus datos antes de enviar.</div>
+    </div>
+  </div>
+</div>
+
 <script>
-  (function(){ var root=document.documentElement, btn=document.getElementById('tgl');
-    btn.addEventListener('click',function(){ var cur=root.getAttribute('data-theme');
-      if(!cur){ cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
-      root.setAttribute('data-theme', cur==='dark'?'light':'dark'); }); })();
+  (function(){
+    var root=document.documentElement, tgl=document.getElementById('tgl');
+    tgl.addEventListener('click',function(){ var cur=root.getAttribute('data-theme'); if(!cur){cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';} root.setAttribute('data-theme', cur==='dark'?'light':'dark'); });
+
+    var REQ = "Our one hard requirement: the platform must stay agnostic to player-account and bankroll management. The operator keeps the wallet, player identity, KYC/AML and licensing on their side; the platform integrates through a seamless single-wallet API (debit/credit/rollback), without imposing its own PAM. Casino is a must; sportsbook and poker are a plus.";
+    var SIG = "Best regards,\n[Your name] - [Title] - [email] - [phone]";
+    var EMAILS = {
+      "EveryMatrix": { to:"sales@everymatrix.com", subject:"Casino platform for an Argentina-facing operator - seamless single-wallet (operator-side PAM)",
+        body:"Hi EveryMatrix team,\n\nI'm reaching out on behalf of an operator preparing to launch in Argentina. We're shortlisting gaming platforms, and your modular, vendor-agnostic architecture - CasinoEngine running on top of a separable GamMatrix - is exactly why you're at the top of our list.\n\n"+REQ+"\n\nCould we set up a 30-minute intro call with your commercial/partnerships team? Happy to sign an NDA first.\n\n"+SIG },
+      "EGT Digital": { to:"contact form at egt-digital.com", subject:"Casino platform (operator-side wallet) - Argentina-facing operator",
+        body:"Hi EGT Digital team,\n\nI'm contacting you on behalf of an operator preparing to launch in Argentina. We're evaluating platforms, and your X-Nave all-in-one platform is a strong fit for the casino-first build we're scoping.\n\n"+REQ+"\n\nCould we arrange a 30-minute intro call with your commercial team? Glad to sign an NDA first.\n\n"+SIG },
+      "GR8 Tech": { to:"gr8.tech/contacts (Business Development)", subject:"Casino platform integrated to operator's own wallet - Argentina",
+        body:"Hi GR8 Tech team,\n\nI'm reaching out on behalf of an operator preparing to launch in Argentina. Your full-stack platform that connects to the operator's own backend via API/webhooks is exactly the model we're after.\n\n"+REQ+"\n\nWould a 30-minute intro call with your commercial team work? Happy to sign an NDA first.\n\n"+SIG },
+      "SOFTSWISS": { to:"sales via softswiss.com", subject:"Game Aggregator on operator's own wallet - Argentina-facing operator",
+        body:"Hi SOFTSWISS team,\n\nI'm contacting you on behalf of an operator preparing to launch in Argentina. Your Game Aggregator's seamless-wallet callback against the operator's own wallet is exactly the integration model we want.\n\n"+REQ+"\n\nCould we set up a 30-minute intro call with your commercial team? Glad to sign an NDA first.\n\n"+SIG },
+      "Digitain": { to:"digitain.com/contact-us", subject:"Casino + sportsbook on operator-side wallet - Argentina",
+        body:"Hi Digitain team,\n\nI'm reaching out on behalf of an operator preparing to launch in Argentina. Your casino + sportsbook (and poker) offering with a modular API is a strong fit for what we're scoping.\n\n"+REQ+"\n\nCould we arrange a 30-minute intro call with your commercial team? Happy to sign an NDA first.\n\n"+SIG },
+      "Delasport": { to:"delasport.com/contact-us", subject:"Casino + sportsbook run on an external (operator) PAM - Argentina",
+        body:"Hi Delasport team,\n\nI'm contacting you on behalf of an operator preparing to launch in Argentina. We're interested in your casino and sportsbook - with one caveat that's essential for us: the operator will bring its own PAM and wallet, so we'd need your products running seamless-wallet against an external player-account system (the operator keeps wallet, identity, KYC/AML and licensing).\n\nCould you confirm whether your casino/sportsbook can run on an operator-side wallet, and set up a 30-minute intro call with your commercial team? Casino is the priority; sportsbook a plus. NDA is fine.\n\n"+SIG },
+      "BetConstruct": { to:"contact via betconstruct.com", subject:"Casino on operator's own PAM/wallet via API - Argentina",
+        body:"Hi BetConstruct team,\n\nI'm reaching out on behalf of an operator preparing to launch in Argentina. We're interested in your casino suite (sportsbook and poker a plus), run against the operator's own PAM/wallet via API.\n\nOur hard requirement: keep player-account and bankroll management on the operator's side - wallet, identity, KYC/AML and licensing stay with the operator; the platform integrates via a seamless single-wallet API (debit/credit/rollback), without imposing Spring's PAM.\n\nCould we set up a 30-minute intro call with your commercial team? Happy to sign an NDA first.\n\n"+SIG }
+    };
+
+    var modal=document.getElementById('emModal'), elTo=document.getElementById('emTo'), elSubj=document.getElementById('emSubj'), elBody=document.getElementById('emBody'), elCopy=document.getElementById('emCopy'), elTitle=document.getElementById('emTitle');
+    function norm(s){ return (s||'').replace(/[★☆]/g,'').replace(/\s+/g,' ').trim(); }
+    function openEmail(k){ var e=EMAILS[k]; if(!e) return; elTitle.firstChild.textContent="Cold email - "+k+" "; elTo.textContent="→ "+e.to; elSubj.textContent=e.subject; elBody.textContent=e.body; modal.classList.add('open'); elCopy.textContent="Copiar email"; }
+    function closeEmail(){ modal.classList.remove('open'); }
+
+    document.querySelectorAll('.cand').forEach(function(card){
+      var nmEl=card.querySelector('.nm'); if(!nmEl) return;
+      var k=norm(nmEl.textContent); if(!EMAILS[k]) return;
+      var foot=document.createElement('div'); foot.className='cand-foot';
+      var b=document.createElement('button'); b.className='emailbtn'; b.type='button'; b.textContent='✉ Ver cold email';
+      b.addEventListener('click', function(){ openEmail(k); });
+      foot.appendChild(b);
+      (card.querySelector('.cand-b')||card).appendChild(foot);
+    });
+
+    document.getElementById('emClose').addEventListener('click', closeEmail);
+    modal.addEventListener('click', function(ev){ if(ev.target===modal) closeEmail(); });
+    document.addEventListener('keydown', function(ev){ if(ev.key==='Escape') closeEmail(); });
+    elCopy.addEventListener('click', function(){
+      var txt="Subject: "+elSubj.textContent+"\n\n"+elBody.textContent;
+      if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(function(){ elCopy.textContent="¡Copiado!"; setTimeout(function(){elCopy.textContent="Copiar email";},1500); }); }
+    });
+  })();
 </script>
 </body>
 </html>
