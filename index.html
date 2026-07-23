@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portal — Búsqueda de plataforma de juego en línea</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBCMkE0QSIvPjxwYXRoIGQ9Ik0yMi41IDkuMmMtMS42LTEuNi00LTIuNS02LjYtMi41LTQuMSAwLTcgMi4yLTcgNS4yIDAgMyAyLjQgNC4zIDYuNCA1LjEgMy4xLjYgNC4yIDEuMSA0LjIgMi4zIDAgMS4yLTEuNCAyLTMuNiAyLTIuMiAwLTQtLjktNS4zLTIuMyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --navy:#0B2A4A; --navy2:#123a63; --teal:#0E8F89; --teal-br:#0FB5AE; --teal-hi:#8ff0ea; --teal-ink:#04201e;
+    --done:#127A4A; --done-bg:#E4F3EA; --curso:#B45309; --curso-bg:#FBECD9; --prox:#526074; --prox-bg:#EAEFF4;
+    --ok:#127A4A; --no:#B3261E; --nobg:#FBEAE8; --ours-bg:#FDF3F2;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.06);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --teal-ink:#04201e;
+    --done:#34D399; --done-bg:#0F3222; --curso:#FBBF24; --curso-bg:#392808; --prox:#9FB0C0; --prox-bg:#1A2836;
+    --ok:#34D399; --no:#F87171; --nobg:#3A1615; --ours-bg:#241413;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --teal-ink:#04201e;
+    --done:#34D399; --done-bg:#0F3222; --curso:#FBBF24; --curso-bg:#392808; --prox:#9FB0C0; --prox-bg:#1A2836;
+    --ok:#34D399; --no:#F87171; --nobg:#3A1615; --ours-bg:#241413;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --teal:#0E8F89; --teal-br:#0FB5AE; --teal-ink:#04201e;
+    --done:#127A4A; --done-bg:#E4F3EA; --curso:#B45309; --curso-bg:#FBECD9; --prox:#526074; --prox-bg:#EAEFF4;
+    --ok:#127A4A; --no:#B3261E; --nobg:#FBEAE8; --ours-bg:#FDF3F2;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:26px 20px 60px; }
+  h2{ font-size:1.02rem; letter-spacing:.01em; margin:0 0 14px; }
+  .eyebrow{ font-size:.66rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); }
+  section{ margin-top:30px; }
+
+  .top{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+  .badge{ width:44px; height:44px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--navy),var(--navy2) 45%,#0FB5AE 130%); box-shadow:var(--shadow); }
+  .top .ttl{ flex:1; min-width:0; }
+  .top .ttl .t1{ font-size:1.18rem; font-weight:800; letter-spacing:-.01em; }
+  .top .ttl .t2{ font-size:.78rem; color:var(--muted); }
+  .stamp{ font-size:.7rem; color:var(--muted); display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--curso); box-shadow:0 0 0 3px var(--curso-bg); }
+  .tgl{ border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:6px 9px; font-size:.72rem; cursor:pointer; }
+  .tgl:hover{ color:var(--ink); border-color:var(--muted); }
+  .tgl:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+
+  .thesis{ margin:20px 0; padding:16px 18px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); }
+  .thesis .lead{ font-size:1.04rem; font-weight:600; text-wrap:balance; }
+  .thesis .lead b{ color:var(--teal); }
+  .findlink{ display:flex; align-items:center; gap:13px; margin:14px 0 0; padding:13px 16px; background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); text-decoration:none; color:var(--ink); }
+  .findlink:hover{ border-color:var(--teal-br); }
+  .findlink:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  .fl-ic{ font-size:1.45rem; line-height:1; }
+  .fl-t{ display:flex; flex-direction:column; gap:1px; }
+  .fl-t .a{ font-size:.92rem; font-weight:800; }
+  .fl-t .b{ font-size:.78rem; color:var(--teal); font-weight:600; }
+  .fl-go{ margin-left:auto; color:var(--teal); font-weight:800; font-size:1.1rem; }
+
+  .arch{ display:flex; flex-direction:column; }
+  .layer{ border-radius:14px; padding:15px 16px; }
+  .layer.ours{ border:2px dashed var(--no); background:var(--ours-bg); }
+  .layer.plat{ border:2px solid var(--teal-br); background:var(--surface); box-shadow:var(--shadow); }
+  .lh,.ph{ font-size:.86rem; font-weight:700; margin-bottom:12px; display:flex; align-items:center; gap:9px; flex-wrap:wrap; }
+  .lh{ color:var(--no); }
+  .tag{ font-size:.58rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#fff; border-radius:99px; padding:3px 9px; }
+  .tag.no{ background:var(--no); } .tag.yes{ background:var(--teal-br); }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip-o{ border:1.5px solid var(--no); color:var(--no); background:var(--surface); border-radius:9px; padding:6px 11px; font-size:.8rem; font-weight:700; }
+  .connector{ position:relative; display:flex; justify-content:center; padding:13px 0; }
+  .connector::before{ content:""; position:absolute; top:0; bottom:0; left:50%; width:2px; background:var(--line); transform:translateX(-50%); }
+  .pill{ position:relative; background:var(--navy); color:#fff; font-size:.72rem; line-height:1.35; border-radius:12px; padding:7px 15px; text-align:center; max-width:92%; box-shadow:var(--shadow); }
+  .pill b{ color:var(--teal-hi); }
+  .cap{ border:1px solid var(--line); background:var(--surface2); border-radius:9px; padding:6px 11px; font-size:.8rem; font-weight:600; }
+  .cap.must{ border-color:var(--teal-br); background:var(--teal-br); color:var(--teal-ink); font-weight:800; }
+  .cap.nice{ border-color:var(--teal); color:var(--teal); background:transparent; }
+  .req{ margin-top:13px; font-size:.82rem; background:var(--surface2); border-left:3px solid var(--teal-br); border-radius:0 9px 9px 0; padding:10px 13px; }
+  .req b{ color:var(--teal); }
+
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } }
+  .scope{ border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); background:var(--surface); }
+  .scope-h{ padding:11px 16px; font-weight:800; font-size:.9rem; color:#fff; }
+  .scope.ok .scope-h{ background:var(--ok); } .scope.no .scope-h{ background:var(--no); }
+  .scope ul{ list-style:none; margin:0; padding:12px 16px; }
+  .scope li{ position:relative; padding:0 0 9px 22px; font-size:.83rem; }
+  .scope li:last-child{ padding-bottom:2px; }
+  .scope li::before{ position:absolute; left:0; top:0; font-weight:800; }
+  .scope.ok li::before{ content:"✓"; color:var(--ok); } .scope.no li::before{ content:"✕"; color:var(--no); }
+  .scope li b{ color:var(--ink); }
+
+  .board{ background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); overflow:hidden; }
+  .board-h{ display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:16px 18px 10px; flex-wrap:wrap; }
+  .prog{ display:flex; align-items:center; gap:10px; font-size:.8rem; color:var(--muted); }
+  .prog .n{ font-weight:800; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .bar{ width:120px; height:7px; border-radius:99px; background:var(--surface2); overflow:hidden; }
+  .bar > i{ display:block; height:100%; width:57%; border-radius:99px; background:linear-gradient(90deg,var(--teal),var(--teal-br)); }
+  .steps{ list-style:none; margin:0; padding:4px 0 0; }
+  .step{ display:grid; grid-template-columns:30px 1fr auto; gap:12px; align-items:start; padding:11px 18px; border-top:1px solid var(--line); }
+  .step .num{ font-family:ui-monospace,monospace; font-size:.72rem; color:var(--muted); padding-top:2px; font-variant-numeric:tabular-nums; }
+  .step .body .nm{ font-weight:700; font-size:.92rem; }
+  .step .body .de{ font-size:.8rem; color:var(--muted); }
+  .chip{ font-size:.66rem; font-weight:800; letter-spacing:.03em; text-transform:uppercase; padding:3px 9px; border-radius:99px; white-space:nowrap; align-self:center; }
+  .c-done{ color:var(--done); background:var(--done-bg); } .c-curso{ color:var(--curso); background:var(--curso-bg); } .c-prox{ color:var(--prox); background:var(--prox-bg); }
+  .steplink{ color:var(--teal); text-decoration:none; font-weight:800; } .steplink:hover{ text-decoration:underline; }
+  .limit{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:13px 18px; border-top:1px solid var(--line); background:var(--surface2); font-size:.82rem; color:var(--muted); }
+  .limit b{ color:var(--ink); }
+
+  footer{ margin-top:34px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; }
+  footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge" aria-label="logo">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg>
+    </div>
+    <div class="ttl">
+      <div class="t1">Búsqueda de plataforma de juego en línea</div>
+      <div class="t2">Portal del proyecto · qué buscamos, qué es responsabilidad del operador, y en qué punto estamos</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <button class="tgl" id="tgl" type="button" aria-label="Cambiar tema">◐ Tema</button>
+      <div class="stamp"><span class="dot"></span> Actualizado 23 jul 2026</div>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="eyebrow">Lo que buscamos, en una línea</div>
+    <div class="lead">Una <b>plataforma de casino</b> (apuestas deportivas y póker, deseables) que deje la gestión de los usuarios y del saldo del jugador (el «bankroll») <b>del lado del operador</b>, para un operador en Argentina. La billetera, la verificación de identidad, la prevención de lavado, los pagos y el licenciamiento son <b>responsabilidad del operador</b>. Sirve tanto para juego con dinero real como para usos sin apuestas.</div>
+  </div>
+
+  <a class="findlink" href="findings.html">
+    <span class="fl-ic" aria-hidden="true">⚖️</span>
+    <span class="fl-t"><span class="a">Hallazgos de licenciamiento — Argentina y Uruguay</span><span class="b">Nuestro relevamiento del marco regulatorio, como punto de partida de lo que ya hicimos</span></span>
+    <span class="fl-go" aria-hidden="true">→</span>
+  </a>
+
+  <section>
+    <h2>Arquitectura — qué le pedimos a la plataforma, y qué es del operador</h2>
+    <div class="arch">
+      <div class="layer ours">
+        <div class="lh"><span class="tag no">Fuera de alcance</span> Responsabilidad del operador — fuera del alcance de la búsqueda; no se lo pedimos al proveedor</div>
+        <div class="chips">
+          <span class="chip-o">Gestión de cuentas de jugadores (PAM)</span>
+          <span class="chip-o">Billetera del jugador (wallet)</span>
+          <span class="chip-o">Manejo del saldo (bankroll)</span>
+          <span class="chip-o">Verificación de identidad (KYC)</span>
+          <span class="chip-o">Prevención de lavado (AML)</span>
+          <span class="chip-o">Pagos y bancarización</span>
+          <span class="chip-o">Licenciamiento y cumplimiento</span>
+          <span class="chip-o">Uso final y su legalidad</span>
+        </div>
+      </div>
+
+      <div class="connector">
+        <span class="pill">Billetera única integrada (<b>seamless single-wallet</b>): la plataforma se conecta con los sistemas <b>del operador</b> (por API) y registra cada apuesta y premio en tiempo real</span>
+      </div>
+
+      <div class="layer plat">
+        <div class="ph"><span class="tag yes">Lo que buscamos</span> La plataforma — capacidades</div>
+        <div class="chips">
+          <span class="cap must">● Casino — obligatorio</span>
+          <span class="cap nice">○ Apuestas deportivas (sportsbook) — deseable</span>
+          <span class="cap nice">○ Póker — deseable</span>
+          <span class="cap">Catálogo de juegos integrado (agregación)</span>
+          <span class="cap">Motor de bonos y promociones</span>
+          <span class="cap">Panel de gestión y reportes (back-office)</span>
+          <span class="cap">Certificable por laboratorio homologador (GLI)</span>
+        </div>
+        <div class="req">Requisito fuerte — que la plataforma sea <b>indiferente a quién maneja los usuarios y el saldo</b> («bankroll»): el dinero y la identidad del jugador viven del lado del operador y la plataforma sólo los consulta, sin imponer su propio sistema de cuentas (PAM). <b>Indiferente al uso</b>: sirve para juego con dinero real o sin apuestas — la elección y su marco legal son del operador.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Alcance</h2>
+    <div class="cols">
+      <div class="scope ok">
+        <div class="scope-h">✓ En alcance — la plataforma</div>
+        <ul>
+          <li><b>Casino en línea — obligatorio;</b> apuestas deportivas (sportsbook) y póker, deseables, en la misma plataforma.</li>
+          <li><b>Que la gestión de los usuarios y del saldo quede del lado del operador</b> (billetera única integrada / «bankroll») — el requisito fuerte, no negociable.</li>
+          <li><b>Fabricante de plataforma (OEM) de mercado emergente con buena reputación</b> — con licencias serias y certificación de laboratorios homologadores (GLI, BMM, iTech).</li>
+          <li><b>Modular y abierta</b> (por integración / API), sin dependencia del proveedor — que el operador use su propio sistema de cuentas (PAM).</li>
+          <li><b>Técnicamente certificable</b> (por laboratorio homologador, GLI), según la jurisdicción.</li>
+          <li><b>Apta para juego con dinero real o usos sin apuestas.</b></li>
+        </ul>
+      </div>
+      <div class="scope no">
+        <div class="scope-h">✕ Fuera de alcance — responsabilidad del operador</div>
+        <ul>
+          <li><b>Billetera, saldo (bankroll) y gestión de cuentas de jugadores (PAM)</b> — del operador (de eso se trata el requisito).</li>
+          <li><b>Verificación de identidad (KYC) y prevención de lavado (AML)</b> — responsabilidad del operador.</li>
+          <li><b>Pagos y bancarización</b> — no se los pedimos a la plataforma.</li>
+          <li><b>Licenciamiento y cumplimiento normativo</b> — del operador; no lo asumimos.</li>
+          <li><b>El uso final y su legalidad</b> (y cualquier obligación regulatoria) — decisión y responsabilidad del operador.</li>
+          <li><b>Proveedores de contenido por separado</b> (estudios de juegos sueltos): buscamos la plataforma, no catálogos aislados.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="board">
+      <div class="board-h">
+        <h2 style="margin:0;">Avances</h2>
+        <div class="prog"><span class="bar"><i></i></span> <span class="n">4</span>/7 completadas</div>
+      </div>
+      <ol class="steps">
+        <li class="step"><span class="num">01</span><div class="body"><div class="nm">Mandato y alcance</div><div class="de">Qué buscamos y qué es del operador, definido (arriba).</div></div><span class="chip c-done">Listo</span></li>
+        <li class="step"><span class="num">02</span><div class="body"><div class="nm">Viabilidad del mercado (Argentina / Uruguay)</div><div class="de">Contexto de mercado relevado; el marco legal del uso queda del lado del operador.</div></div><span class="chip c-done">Listo</span></li>
+        <li class="step"><span class="num">03</span><div class="body"><div class="nm">Lista corta de plataformas</div><div class="de">Proveedores relevados y filtrados por el requisito clave (billetera única integrada).</div></div><span class="chip c-done">Listo</span></li>
+        <li class="step"><span class="num">04</span><div class="body"><div class="nm">Propiedad y dueños reales (UBO) + debida diligencia</div><div class="de">Fundadores, control y reputación mapeados con fuente.</div></div><span class="chip c-done">Listo</span></li>
+        <li class="step"><span class="num">05</span><div class="body"><div class="nm"><a class="steplink" href="candidatos.html">Ronda de contacto con candidatos →</a></div><div class="de">Plataformas de casino que cumplen el requisito clave. Ver la lista de candidatos y sus datos.</div></div><span class="chip c-curso">En curso</span></li>
+        <li class="step"><span class="num">06</span><div class="body"><div class="nm">Evaluación técnica de integración</div><div class="de">Cómo se integra con los sistemas del operador: puntos de conexión, reversas, tiempos de respuesta y confiabilidad; y si el operador puede usar su propio sistema de cuentas (PAM).</div></div><span class="chip c-prox">Próximo</span></li>
+        <li class="step"><span class="num">07</span><div class="body"><div class="nm">Selección + términos comerciales</div><div class="de">Comparar capacidades, certificación técnica y comercial.</div></div><span class="chip c-prox">Próximo</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <div class="d">Datos con fuentes públicas verificadas; nada inferido por apellido. Este material define el alcance de la búsqueda tecnológica; no constituye asesoría legal ni de inversión.</div>
+    <div class="badge" style="width:30px;height:30px;border-radius:8px;">
+      <svg width="19" height="19" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg>
+    </div>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('tgl');
+    btn.addEventListener('click',function(){
+      var cur=root.getAttribute('data-theme');
+      if(!cur){ cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+      root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>

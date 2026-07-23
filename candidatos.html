@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Candidatos de plataforma — datos recopilados</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBCMkE0QSIvPjxwYXRoIGQ9Ik0yMi41IDkuMmMtMS42LTEuNi00LTIuNS02LjYtMi41LTQuMSAwLTcgMi4yLTcgNS4yIDAgMyAyLjQgNC4zIDYuNCA1LjEgMy4xLjYgNC4yIDEuMSA0LjIgMi4zIDAgMS4yLTEuNCAyLTMuNiAyLTIuMiAwLTQtLjktNS4zLTIuMyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --navy:#0B2A4A; --navy2:#123a63; --teal:#0E8F89; --teal-br:#0FB5AE; --teal-hi:#8ff0ea;
+    --ok:#127A4A; --okbg:#E4F3EA; --warn:#B45309; --warnbg:#FBECD9; --isr:#B45309; --isrbg:#FDEFE0; --off:#5B6B7B; --offbg:#EAEFF4;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.06);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --ok:#34D399; --okbg:#0F3222; --warn:#FBBF24; --warnbg:#392808; --isr:#FBBF24; --isrbg:#392808; --off:#9FB0C0; --offbg:#1A2836;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --ok:#34D399; --okbg:#0F3222; --warn:#FBBF24; --warnbg:#392808; --isr:#FBBF24; --isrbg:#392808; --off:#9FB0C0; --offbg:#1A2836;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --teal:#0E8F89; --teal-br:#0FB5AE; --ok:#127A4A; --okbg:#E4F3EA; --warn:#B45309; --warnbg:#FBECD9; --isr:#B45309; --isrbg:#FDEFE0; --off:#5B6B7B; --offbg:#EAEFF4;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:26px 20px 60px; }
+  .top{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+  .badge{ width:44px; height:44px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--navy),var(--navy2) 45%,#0FB5AE 130%); box-shadow:var(--shadow); }
+  .top .ttl{ flex:1; min-width:0; } .top .ttl .t1{ font-size:1.18rem; font-weight:800; letter-spacing:-.01em; } .top .ttl .t2{ font-size:.78rem; color:var(--muted); }
+  .tgl{ border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:6px 9px; font-size:.72rem; cursor:pointer; }
+  .tgl:hover{ color:var(--ink); border-color:var(--muted); } .tgl:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  a.back{ display:inline-block; margin:16px 0 0; color:var(--teal); font-size:.8rem; font-weight:700; text-decoration:none; } a.back:hover{ text-decoration:underline; }
+
+  .intro{ margin:18px 0 6px; padding:14px 16px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); font-size:.88rem; }
+  .intro b{ color:var(--teal); }
+  .legend{ font-size:.74rem; color:var(--muted); margin:8px 2px 0; display:flex; gap:14px; flex-wrap:wrap; }
+  .legend b{ color:var(--ink); }
+
+  .grid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
+  @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+  .cand{ border:1px solid var(--line); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; }
+  .cand.star{ border-color:var(--teal-br); }
+  .cand-h{ display:flex; align-items:center; justify-content:space-between; gap:8px; padding:12px 15px 8px; }
+  .cand-h .nm{ font-size:1.02rem; font-weight:800; display:flex; align-items:center; gap:7px; }
+  .cand-h .star-i{ color:var(--warn); }
+  .cand-h .sede{ font-size:.72rem; color:var(--muted); text-align:right; }
+  .cand-b{ padding:0 15px 14px; }
+  .verts{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+  .v{ font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:99px; border:1px solid var(--line); color:var(--muted); }
+  .v.on{ color:var(--ok); border-color:var(--ok); background:var(--okbg); }
+  .wallet{ display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:9px; background:var(--surface2); margin-bottom:10px; font-size:.82rem; }
+  .wallet .lab{ font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+  .pill{ font-size:.68rem; font-weight:800; padding:2px 9px; border-radius:99px; margin-left:auto; }
+  .p-si{ color:var(--ok); background:var(--okbg); } .p-parc{ color:var(--warn); background:var(--warnbg); }
+  .kv{ display:grid; grid-template-columns:auto 1fr; gap:5px 10px; font-size:.82rem; }
+  .kv .k{ font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--teal); padding-top:2px; white-space:nowrap; }
+  .kv b{ color:var(--ink); }
+  .isrtag{ font-size:.64rem; font-weight:800; color:var(--isr); background:var(--isrbg); border-radius:99px; padding:1px 7px; }
+  .warntag{ font-size:.64rem; font-weight:800; color:var(--warn); background:var(--warnbg); border-radius:99px; padding:1px 7px; }
+
+  .ref{ margin-top:16px; padding:12px 15px; border:1px dashed var(--line); border-radius:12px; font-size:.83rem; color:var(--muted); }
+  .ref b{ color:var(--ink); }
+  footer{ margin-top:30px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge" aria-label="logo"><svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg></div>
+    <div class="ttl"><div class="t1">Candidatos de plataforma</div><div class="t2">Datos recopilados hasta ahora · en evaluación</div></div>
+    <button class="tgl" id="tgl" type="button" aria-label="Cambiar tema">◐ Tema</button>
+  </header>
+
+  <a class="back" href="index.html">← Volver al portal</a>
+
+  <div class="intro">
+    Plataformas en evaluación, filtradas por lo esencial del mandato: <b>casino</b> y que <b>el saldo y los usuarios queden del lado del operador</b> (billetera única integrada). Apuestas deportivas y póker suman. Estos datos son un punto de situación; la debida diligencia final es del operador.
+  </div>
+  <div class="legend"><span><b>★</b> mejor encaje</span> <span><b>Saldo del operador</b> = deja el saldo y los usuarios de tu lado</span> <span>Sí · Parcial (empuja su propio sistema)</span></div>
+
+  <div class="grid">
+
+    <div class="cand star">
+      <div class="cand-h"><div class="nm">EveryMatrix <span class="star-i">★</span></div><div class="sede">Bucarest, Rumania</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v on">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Plataforma modular; su sistema de cuentas es separable y no obliga a usar el suyo. Es la más explícita en “sin dependencia del proveedor”.</span>
+          <span class="k">Reputación</span><span>Proveedor de primer nivel, licenciado en varios mercados regulados.</span>
+          <span class="k">Propiedad</span><span>Cofundadores danés y noruego. <b>Sin</b> conexión israelí documentada.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cand star">
+      <div class="cand-h"><div class="nm">EGT Digital <span class="star-i">★</span></div><div class="sede">Sofía, Bulgaria</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Plataforma todo-en-uno modular (X-Nave): casino, apuestas y herramientas de gestión.</span>
+          <span class="k">Reputación</span><span>Parte del grupo EGT, fabricante consolidado con certificaciones de laboratorio.</span>
+          <span class="k">Propiedad</span><span>Búlgara (grupo EGT). <b>Sin</b> conexión israelí.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cand star">
+      <div class="cand-h"><div class="nm">GR8 Tech <span class="star-i">★</span></div><div class="sede">Chișinău, Moldavia / Chipre</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Se conecta al sistema del operador por integración (billetera, ingreso y datos del jugador).</span>
+          <span class="k">Reputación</span><span>Heredera de Parimatch Tech; plataforma robusta en mercados emergentes.</span>
+          <span class="k">Propiedad</span><span>Ucraniano / chipriota (Portnov). <b>Sin</b> conexión israelí.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cand">
+      <div class="cand-h"><div class="nm">SOFTSWISS</div><div class="sede">Malta / Bielorrusia</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Agregador de casino con billetera del operador integrada; punto de integración único.</span>
+          <span class="k">Reputación</span><span>Alta; fuerte en mercados emergentes y criptopagos.</span>
+          <span class="k">Propiedad</span><span><b>Sin</b> conexión israelí documentada.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cand">
+      <div class="cand-h"><div class="nm">Digitain</div><div class="sede">Bucarest / Armenia</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v on">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-parc">Parcial</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Ofrece integración, pero lidera con su plataforma completa; confirmar cuánto se puede separar.</span>
+          <span class="k">Reputación</span><span>Proveedor armenio consolidado (~3.000 empleados).</span>
+          <span class="k">Propiedad</span><span>Armenia (familia Vardanyan). <b>Sin</b> conexión israelí.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cand">
+      <div class="cand-h"><div class="nm">Delasport</div><div class="sede">Sofía, Bulgaria</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-parc">Parcial</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Ofrecen su propio sistema de cuentas, con opción modular; confirmar el grado de separación.</span>
+          <span class="k">Reputación</span><span>Proveedor establecido de casino + apuestas + gestión.</span>
+          <span class="k">Propiedad</span><span>Empresa privada; fundador y dueño único.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="cand">
+      <div class="cand-h"><div class="nm">BetConstruct</div><div class="sede">Armenia</div></div>
+      <div class="cand-b">
+        <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v on">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-parc">Parcial</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Suite muy amplia; funciona mejor integrada, menos afín a separar el sistema de cuentas.</span>
+          <span class="k">Reputación</span><span>Grande, fuerte en mercados emergentes (LatAm, África).</span>
+          <span class="k">Propiedad</span><span>Armenia (Baloulian). <b>Sin</b> conexión israelí.</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="ref">
+    <b>Referencia de primer nivel — Playtech:</b> cubre casino, apuestas y póker y es tier-1 (grupo cotizado en bolsa), pero su plataforma tiende a estar integrada (menos afín a dejar el saldo del lado del operador). Se incluye como comparación, no como primer candidato.
+  </div>
+
+  <footer>
+    <div class="d">Datos con fuentes públicas verificadas; nada inferido por apellido. El detalle de propiedad y contacto está en el dossier interno. No es asesoría legal.</div>
+    <div class="badge" style="width:30px;height:30px;border-radius:8px;"><svg width="19" height="19" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg></div>
+  </footer>
+</div>
+
+<script>
+  (function(){ var root=document.documentElement, btn=document.getElementById('tgl');
+    btn.addEventListener('click',function(){ var cur=root.getAttribute('data-theme');
+      if(!cur){ cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+      root.setAttribute('data-theme', cur==='dark'?'light':'dark'); }); })();
+</script>
+</body>
+</html>
