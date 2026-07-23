@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agenda de eventos — Europa, ago–dic 2026</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBCMkE0QSIvPjxwYXRoIGQ9Ik0yMi41IDkuMmMtMS42LTEuNi00LTIuNS02LjYtMi41LTQuMSAwLTcgMi4yLTcgNS4yIDAgMyAyLjQgNC4zIDYuNCA1LjEgMy4xLjYgNC4yIDEuMSA0LjIgMi4zIDAgMS4yLTEuNCAyLTMuNiAyLTIuMiAwLTQtLjktNS4zLTIuMyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --navy:#0B2A4A; --navy2:#123a63; --teal:#0E8F89; --teal-br:#0FB5AE; --teal-hi:#8ff0ea;
+    --ok:#127A4A; --okbg:#E4F3EA; --warn:#B45309; --warnbg:#FBECD9; --star:#B45309;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.06);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --ok:#34D399; --okbg:#0F3222; --warn:#FBBF24; --warnbg:#392808; --star:#FBBF24;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --ok:#34D399; --okbg:#0F3222; --warn:#FBBF24; --warnbg:#392808; --star:#FBBF24;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --teal:#0E8F89; --teal-br:#0FB5AE; --ok:#127A4A; --okbg:#E4F3EA; --warn:#B45309; --warnbg:#FBECD9; --star:#B45309;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:26px 20px 60px; }
+  .top{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+  .badge{ width:44px; height:44px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--navy),var(--navy2) 45%,#0FB5AE 130%); box-shadow:var(--shadow); }
+  .top .ttl{ flex:1; min-width:0; } .top .ttl .t1{ font-size:1.18rem; font-weight:800; letter-spacing:-.01em; } .top .ttl .t2{ font-size:.78rem; color:var(--muted); }
+  .tgl{ border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:6px 9px; font-size:.72rem; cursor:pointer; }
+  .tgl:hover{ color:var(--ink); border-color:var(--muted); } .tgl:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  a.back{ display:inline-block; margin:16px 0 0; color:var(--teal); font-size:.8rem; font-weight:700; text-decoration:none; } a.back:hover{ text-decoration:underline; }
+
+  .intro{ margin:18px 0 6px; padding:14px 16px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); font-size:.9rem; }
+  .intro b{ color:var(--teal); }
+  h2.sec{ font-size:.82rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:26px 0 10px; }
+
+  .ev{ border:1px solid var(--line); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; margin-bottom:12px; }
+  .ev.star{ border-color:var(--teal-br); }
+  .ev-h{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:14px 16px 6px; flex-wrap:wrap; }
+  .ev-h .nm{ font-size:1.06rem; font-weight:800; display:flex; align-items:center; gap:8px; }
+  .ev-h .st{ color:var(--star); }
+  .ev-h .when{ text-align:right; font-size:.8rem; color:var(--muted); white-space:nowrap; }
+  .ev-h .when b{ color:var(--ink); }
+  .ev-b{ padding:0 16px 15px; }
+  .cost{ display:inline-flex; align-items:center; gap:6px; font-size:.78rem; font-weight:700; padding:3px 10px; border-radius:99px; margin:2px 0 9px; }
+  .c-free{ color:var(--ok); background:var(--okbg); } .c-pay{ color:var(--warn); background:var(--warnbg); }
+  .why{ font-size:.86rem; margin-bottom:12px; } .why b{ color:var(--ink); }
+  .reg{ display:inline-flex; align-items:center; gap:7px; background:var(--teal-br); color:#04201e; font-weight:800; font-size:.82rem; padding:8px 14px; border-radius:9px; text-decoration:none; }
+  .reg:hover{ filter:brightness(1.06); } .reg:focus-visible{ outline:2px solid var(--navy); outline-offset:2px; }
+  .reg2{ margin-left:8px; font-size:.78rem; color:var(--teal); font-weight:700; text-decoration:none; } .reg2:hover{ text-decoration:underline; }
+
+  .note{ margin-top:6px; padding:13px 16px; border:1px dashed var(--line); border-radius:12px; font-size:.83rem; color:var(--muted); }
+  .note b{ color:var(--ink); }
+  footer{ margin-top:26px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge" aria-label="logo"><svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg></div>
+    <div class="ttl"><div class="t1">Agenda de eventos — Europa</div><div class="t2">Dónde encontrar a los candidatos en persona · ago–dic 2026</div></div>
+    <button class="tgl" id="tgl" type="button" aria-label="Cambiar tema">◐ Tema</button>
+  </header>
+
+  <div class="intro">
+    Dónde conocer a los proveedores cara a cara este año. <b>Como operador/comprador, en los dos grandes el pase es gratis</b> — sólo pagás si querés las conferencias. Fechas y costos verificados en los sitios oficiales (revalidá antes de comprar; los early-bird cambian).
+  </div>
+
+  <h2 class="sec">Imprescindibles — donde están los 4 candidatos ★</h2>
+
+  <div class="ev star">
+    <div class="ev-h"><div class="nm">SBC Summit <span class="st">★</span></div><div class="when"><b>29 sep – 1 oct 2026</b><br>Lisboa (FIL / MEO Arena)</div></div>
+    <div class="ev-b">
+      <span class="cost c-free">● Pase de operador GRATIS · Expo gratis</span> <span style="font-size:.76rem;color:var(--muted)">(pagos: VIP €400–600 con conferencias)</span>
+      <div class="why"><b>El mayor evento B2B pan-europeo</b> (~35.000 asistentes). Todos los proveedores de plataforma, agregadores y turnkey en el piso. Parada #1 del año.</div>
+      <a class="reg" href="https://sbcevents.com/sbc-summit/ticket-options/" target="_blank" rel="noopener">Registrarse →</a>
+    </div>
+  </div>
+
+  <div class="ev star">
+    <div class="ev-h"><div class="nm">SiGMA Central Europe (ex «SiGMA Europe») <span class="st">★</span></div><div class="when"><b>2 – 5 nov 2026</b><br>Roma (Fiera di Roma)</div></div>
+    <div class="ev-b">
+      <span class="cost c-free">● Standard GRATIS para operadores</span> <span style="font-size:.76rem;color:var(--muted)">(Platinum €910–1.099 con conferencias)</span>
+      <div class="why"><b>La mejor sola parada para conocer a los cuatro:</b> EveryMatrix, GR8 Tech, Delasport y EGT Digital exponen todos. Expo gigante (~30.000). El flagship de noviembre se mudó de Malta a Roma.</div>
+      <a class="reg" href="https://tickets.sigma.world/sigma-world-2026/" target="_blank" rel="noopener">Registrarse →</a>
+    </div>
+  </div>
+
+  <h2 class="sec">Regionales — complemento de la gira Bucarest / Sofía</h2>
+
+  <div class="ev">
+    <div class="ev-h"><div class="nm">Entertainment Arena Expo (EAE)</div><div class="when"><b>15 – 16 sep 2026</b><br>Bucarest (Romexpo)</div></div>
+    <div class="ev-b">
+      <span class="cost c-free">● Entrada gratis (trade B2B, +18)</span>
+      <div class="why">Feria rumana; terreno de <b>EGT, Amusnet y Novomatic</b>. Buen primer stop de la gira antes de Sofía. <span style="color:var(--muted)">(Fecha con confianza media — confirmá el link 2026 en el sitio, hoy muestra la edición previa.)</span></div>
+      <a class="reg" href="https://www.earenaexpo.com/en/" target="_blank" rel="noopener">Registrarse →</a>
+    </div>
+  </div>
+
+  <div class="ev">
+    <div class="ev-h"><div class="nm">HIPTHER Warsaw Summit</div><div class="when"><b>27 – 28 oct 2026</b><br>Varsovia (InterContinental)</div></div>
+    <div class="ev-b">
+      <span class="cost c-pay">● Delegate €419 (grupo €1.099)</span> <span style="font-size:.76rem;color:var(--muted)">(pase gratis de operador: no confirmado — sí lo hicieron en Praga, vale preguntar)</span>
+      <div class="why">Evento de otoño de <b>Europa Central y del Este</b> (heredero del CEEGC de Budapest). Networking regulatorio + contactos CEE; Delasport y GR8 activos en el circuito.</div>
+      <a class="reg" href="https://lounge.hipther.com/register/warsaw" target="_blank" rel="noopener">Registrarse →</a>
+    </div>
+  </div>
+
+  <div class="ev">
+    <div class="ev-h"><div class="nm">BEGE Expo + EEGS</div><div class="when"><b>25 – 26 nov 2026</b><br>Sofía (Inter Expo Center)</div></div>
+    <div class="ev-b">
+      <span class="cost c-free">● BEGE Expo gratis (€25 en puerta)</span> <span style="font-size:.76rem;color:var(--muted)">(EEGS conferencia = pago; precio 2026 aún no publicado)</span>
+      <div class="why">En casa de <b>EGT / EGT Digital y Amusnet</b> (búlgaros) — la mejor parada para EGT Digital y el mercado balcánico. La expo (BEGE) es gratis; la conferencia (EEGS) es la parte paga.</div>
+      <a class="reg" href="https://www.balkangamingexpo.com/register/" target="_blank" rel="noopener">Registrarse (BEGE) →</a>
+      <a class="reg2" href="https://eegamingsummit.com/register/" target="_blank" rel="noopener">EEGS (conferencia) →</a>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Por invitación / no aplica:</b> <b>NEXT Retreat Europe</b> (Chipre, 12–14 oct) es un retiro C-level sin piso de expo — networking de alto nivel, no para recorrer proveedores.
+    &nbsp;·&nbsp; <b>Descartados de la ventana:</b> CEGS Bucarest (es de mayo), CEEGC Budapest (discontinuado → «GamingTECH CEE», ahora en marzo), iGB Live Ámsterdam (julio, ya pasó).
+  </div>
+
+  <a class="back" href="index.html">← Volver al portal</a>
+
+  <footer>
+    <div class="d">Fechas y costos verificados en sitios oficiales a jul-2026; los early-bird y tiers cambian — revalidá antes de comprar. No es asesoría legal.</div>
+    <div class="badge" style="width:30px;height:30px;border-radius:8px;"><svg width="19" height="19" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg></div>
+  </footer>
+</div>
+
+<script>
+  (function(){ var root=document.documentElement, btn=document.getElementById('tgl');
+    btn.addEventListener('click',function(){ var cur=root.getAttribute('data-theme');
+      if(!cur){ cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+      root.setAttribute('data-theme', cur==='dark'?'light':'dark'); }); })();
+</script>
+</body>
+</html>
