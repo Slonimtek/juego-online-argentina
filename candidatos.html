@@ -224,9 +224,16 @@
         <li>Los sitios de referencia que mostraron (dominios <code>.com</code> genéricos) no usan <b>.bet.ar</b>; no se presentó evidencia de licencia provincial argentina.</li>
         <li>No se mencionó licencia, regulador ni certificación técnica pese a preguntas directas sobre experiencia.</li>
         <li>Coincide con el patrón de "panel de agentes" que el mandato excluye explícitamente.</li>
-        <li><b>El motor de base, identificado por huella pública (sin login):</b> el sitio de ejemplo <code>holabet216.com</code> carga su widget de apuestas desde un dominio que contiene "digitain" (<code>frame.digitain.bswbet.org</code>); <code>floravive.net</code> usa el mismo patrón de archivos vía otra marca. Es decir, envuelven el motor de <b>Digitain</b> — que ya está en nuestra lista de candidatos — con una capa de panel de agentes sin licencia. Ningún sitio de ejemplo muestra licencia o regulador en el pie de página.</li>
+        <li><b>Motores de base, identificados por huella pública (sin login, sin evadir bloqueos):</b>
+          <ul>
+            <li><code>holabet216.com</code> y <code>jkr216.com</code> cargan su widget de apuestas desde <code>frame.digitain.bswbet.org</code> — dominio que contiene "digitain" explícitamente.</li>
+            <li><code>jkr216.com</code> además carga su lobby de casino desde <code>bsw-dk1.pragmaticplay.net</code> — el script oficial de <b>Pragmatic Play</b>.</li>
+            <li><code>floravive.net</code> usa los mismos archivos del SDK de Digitain, servidos desde otra marca (<code>sport.fivebet777.com</code>).</li>
+            <li><code>soyjoker.com</code>: bloqueado por Cloudflare (WAF activo); sin datos, no se intentó evadir el bloqueo.</li>
+          </ul>
+          En resumen: envuelven motores legítimos (<b>Digitain</b> — ya en nuestra lista — y <b>Pragmatic Play</b>, contenido de casino que suele accederse vía un agregador como los candidatos de arriba) con una capa de panel de agentes sin licencia. El dominio repetido <code>bswbet.org</code> sugiere una marca/red de revendedor interna ("BSW") detrás de varias de sus plantillas. Ningún sitio de ejemplo muestra licencia o regulador; <code>holabet216.com</code> integra <b>Interkassa</b> (pasarela de pagos de la región CIS).</li>
       </ul>
-      <div class="sec-note" style="margin-top:9px;">Evaluación basada en la propuesta recibida y en información técnica pública de los sitios de ejemplo (sin iniciar sesión en ningún panel ni usar credenciales compartidas). <b>Recomendación:</b> contactar al proveedor de base (Digitain) directamente, no a través de este revendedor.</div>
+      <div class="sec-note" style="margin-top:9px;">Evaluación basada en la propuesta recibida y en información técnica pública de los sitios de ejemplo (sin iniciar sesión en ningún panel, sin usar credenciales compartidas, sin evadir bloqueos). <b>Recomendación:</b> contactar a los proveedores de base (Digitain directo; Pragmatic Play vía un agregador) en vez de este revendedor.</div>
     </div>
   </div>
 
