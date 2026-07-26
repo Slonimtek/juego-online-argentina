@@ -65,6 +65,16 @@
 
   .ref{ margin-top:16px; padding:12px 15px; border:1px dashed var(--line); border-radius:12px; font-size:.83rem; color:var(--muted); }
   .ref b{ color:var(--ink); }
+
+  h2.sec{ font-size:.82rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:30px 0 4px; }
+  .sec-note{ font-size:.8rem; color:var(--muted); margin-bottom:12px; }
+  .out{ border:1.5px solid var(--no); border-radius:14px; background:var(--nobg); box-shadow:var(--shadow); overflow:hidden; margin-bottom:12px; }
+  .out-h{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 15px 7px; flex-wrap:wrap; }
+  .out-h .nm{ font-size:.98rem; font-weight:800; color:var(--no); }
+  .out-h .src{ font-size:.72rem; color:var(--muted); }
+  .out-b{ padding:0 15px 14px; font-size:.83rem; }
+  .out-b ul{ margin:8px 0 0; padding-left:18px; } .out-b li{ margin-bottom:5px; }
+  .out-tag{ display:inline-block; font-size:.66rem; font-weight:800; letter-spacing:.03em; text-transform:uppercase; color:#fff; background:var(--no); border-radius:99px; padding:2px 9px; margin-bottom:8px; }
   .cand-foot{ padding:0 15px 13px; }
   .emailbtn{ display:inline-flex; align-items:center; gap:6px; font-size:.76rem; font-weight:700; color:var(--teal); background:transparent; border:1px solid var(--line); border-radius:8px; padding:6px 11px; cursor:pointer; }
   .emailbtn:hover{ border-color:var(--teal-br); }
@@ -199,6 +209,25 @@
 
   <div class="ref">
     <b>Referencia de primer nivel — Playtech:</b> cubre casino, apuestas y póker y es tier-1 (grupo cotizado en bolsa), pero su plataforma tiende a estar integrada (menos afín a dejar el saldo del lado del operador). Se incluye como comparación, no como primer candidato.
+  </div>
+
+  <h2 class="sec">Leads descartados</h2>
+  <div class="sec-note">Propuestas recibidas que no cumplen los criterios del mandato. Se documentan para dejar registro de que fueron evaluadas y por qué se descartaron.</div>
+
+  <div class="out">
+    <div class="out-h"><div class="nm">Vantera</div><div class="src">Contacto entrante (WhatsApp) · 24 jul 2026</div></div>
+    <div class="out-b">
+      <span class="out-tag">No cumple el mandato</span>
+      <div>Oferta de plataforma de casino + apuestas deportivas "personalizada", desde USD 1.000/mes (escala según volumen de NetWin esperado), con panel de administración y sistema de agentes. Representante: Esteban David Bueno Tovar.</div>
+      <ul>
+        <li><b>Arquitectura de panel de agentes</b>, no billetera única del lado del operador — no es el modelo que se busca.</li>
+        <li>Los sitios de referencia que mostraron (dominios <code>.com</code> genéricos) no usan <b>.bet.ar</b>; no se presentó evidencia de licencia provincial argentina.</li>
+        <li>No se mencionó licencia, regulador ni certificación técnica pese a preguntas directas sobre experiencia.</li>
+        <li>Coincide con el patrón de "panel de agentes" que el mandato excluye explícitamente.</li>
+        <li><b>El motor de base, identificado por huella pública (sin login):</b> el sitio de ejemplo <code>holabet216.com</code> carga su widget de apuestas desde un dominio que contiene "digitain" (<code>frame.digitain.bswbet.org</code>); <code>floravive.net</code> usa el mismo patrón de archivos vía otra marca. Es decir, envuelven el motor de <b>Digitain</b> — que ya está en nuestra lista de candidatos — con una capa de panel de agentes sin licencia. Ningún sitio de ejemplo muestra licencia o regulador en el pie de página.</li>
+      </ul>
+      <div class="sec-note" style="margin-top:9px;">Evaluación basada en la propuesta recibida y en información técnica pública de los sitios de ejemplo (sin iniciar sesión en ningún panel ni usar credenciales compartidas). <b>Recomendación:</b> contactar al proveedor de base (Digitain) directamente, no a través de este revendedor.</div>
+    </div>
   </div>
 
   <footer>
