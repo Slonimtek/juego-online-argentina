@@ -53,9 +53,10 @@
   .verts{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
   .v{ font-size:.72rem; font-weight:700; padding:2px 9px; border-radius:99px; border:1px solid var(--line); color:var(--muted); }
   .v.on{ color:var(--ok); border-color:var(--ok); background:var(--okbg); }
-  .contact-status{ display:inline-flex; align-items:center; gap:6px; font-size:.74rem; font-weight:800; padding:3px 10px; border-radius:99px; margin-bottom:9px; }
+  .contact-status{ display:inline-flex; align-items:center; gap:6px; font-size:.74rem; font-weight:800; padding:3px 10px; border-radius:99px; margin-bottom:9px; margin-right:6px; }
   .cs-sent{ color:var(--ok); background:var(--okbg); }
   .cs-form{ color:var(--teal); background:var(--surface2); border:1px solid var(--teal-br); }
+  .cs-followup{ color:var(--warn); background:var(--warnbg); }
   .wallet{ display:flex; align-items:center; gap:8px; padding:8px 10px; border-radius:9px; background:var(--surface2); margin-bottom:10px; font-size:.82rem; }
   .wallet .lab{ font-size:.62rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
   .pill{ font-size:.68rem; font-weight:800; padding:2px 9px; border-radius:99px; margin-left:auto; }
@@ -114,7 +115,7 @@
 
   <div class="intro">
     Plataformas en evaluación, filtradas por lo esencial del mandato: <b>casino</b> y que <b>el saldo y los usuarios queden del lado del operador</b> (billetera única integrada). Apuestas deportivas y póker suman. Estos datos son un punto de situación; la debida diligencia final es del operador.
-    <div style="margin-top:8px;"><span class="contact-status cs-sent" style="margin-bottom:0;">✉ 7/7 contactados — 26 jul 2026</span></div>
+    <div style="margin-top:8px;"><span class="contact-status cs-sent" style="margin-bottom:0;">✉ 8/8 contactados — 28 jul 2026</span><span class="contact-status cs-followup" style="margin-bottom:0;">↻ 5 recontactados — 28 jul 2026 (sin respuesta aún)</span></div>
   </div>
   <div class="legend"><span><b>★</b> mejor encaje</span> <span><b>Saldo del operador</b> = deja el saldo y los usuarios de tu lado</span> <span>Sí · Parcial (empuja su propio sistema)</span></div>
 
@@ -138,7 +139,7 @@
     <div class="cand star">
       <div class="cand-h"><div class="nm">EGT Digital <span class="star-i">★</span></div><div class="sede">Sofía, Bulgaria</div></div>
       <div class="cand-b">
-        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div>
+        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div><div class="contact-status cs-followup">↻ Seguimiento — 28 jul 2026</div>
         <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
         <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
         <div class="kv">
@@ -153,7 +154,7 @@
     <div class="cand star">
       <div class="cand-h"><div class="nm">GR8 Tech <span class="star-i">★</span></div><div class="sede">Chișinău, Moldavia / Chipre</div></div>
       <div class="cand-b">
-        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div>
+        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div><div class="contact-status cs-followup">↻ Seguimiento — 28 jul 2026</div>
         <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
         <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
         <div class="kv">
@@ -165,10 +166,25 @@
       </div>
     </div>
 
+    <div class="cand star">
+      <div class="cand-h"><div class="nm">LuckyStreak <span class="star-i">★</span></div><div class="sede">Riga, Letonia</div></div>
+      <div class="cand-b">
+        <div class="contact-status cs-sent">✉ Contactado — 28 jul 2026</div>
+        <div class="verts"><span class="v on">Casino</span><span class="v">Deportivas</span><span class="v">Póker</span></div>
+        <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
+        <div class="kv">
+          <span class="k">Por qué</span><span>Agregador (LuckyConnect, +6.000 juegos) con «common-wallet API»: el saldo, apuestas y premios se resuelven en tiempo real contra la billetera del operador, sin imponer sistema propio de cuentas.</span>
+          <span class="k">Reputación</span><span>Fundada 2014; licenciada en Letonia, reconocida por MGA, certificada en UK (UKGC), Italia (AIM), Gibraltar y Dinamarca; +1.500 operadores.</span>
+          <span class="k">Propiedad</span><span>Cofundadores Ady Totah (CEO) y Erez Cywier (CTO), descritos en prensa del rubro como emprendedores israelíes; negocio core operado desde Tel Aviv y Limasol. <b>Con</b> conexión israelí documentada.</span>
+          <span class="k">Contacto</span><span><code>Hello@luckystreaklive.com</code> (email general; sin BD LatAm confirmado). Persona clave: Ady Totah, Co-Founder &amp; CEO.</span>
+        </div>
+      </div>
+    </div>
+
     <div class="cand">
       <div class="cand-h"><div class="nm">SOFTSWISS</div><div class="sede">Malta / Bielorrusia</div></div>
       <div class="cand-b">
-        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div>
+        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div><div class="contact-status cs-followup">↻ Seguimiento — 28 jul 2026</div>
         <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
         <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-si">Sí</span></div>
         <div class="kv">
@@ -183,7 +199,7 @@
     <div class="cand">
       <div class="cand-h"><div class="nm">Digitain</div><div class="sede">Bucarest / Armenia</div></div>
       <div class="cand-b">
-        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div>
+        <div class="contact-status cs-sent">✉ Contactado — 28 jul 2026</div>
         <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v on">Póker</span></div>
         <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-parc">Parcial</span></div>
         <div class="kv">
@@ -198,7 +214,7 @@
     <div class="cand">
       <div class="cand-h"><div class="nm">Delasport</div><div class="sede">Sofía, Bulgaria</div></div>
       <div class="cand-b">
-        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div>
+        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div><div class="contact-status cs-followup">↻ Seguimiento — 28 jul 2026</div>
         <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v">Póker</span></div>
         <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-parc">Parcial</span></div>
         <div class="kv">
@@ -213,7 +229,7 @@
     <div class="cand">
       <div class="cand-h"><div class="nm">BetConstruct</div><div class="sede">Armenia</div></div>
       <div class="cand-b">
-        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div>
+        <div class="contact-status cs-sent">✉ Contactado — 26 jul 2026</div><div class="contact-status cs-followup">↻ Seguimiento — 28 jul 2026</div>
         <div class="verts"><span class="v on">Casino</span><span class="v on">Deportivas</span><span class="v on">Póker</span></div>
         <div class="wallet"><span class="lab">Saldo del operador</span><span class="pill p-parc">Parcial</span></div>
         <div class="kv">
@@ -292,6 +308,8 @@
         body:"Hi EGT Digital team,\n\nI'm contacting you on behalf of an operator preparing to launch in Argentina. We're evaluating platforms, and your X-Nave all-in-one platform is a strong fit for the casino-first build we're scoping.\n\n"+REQ+"\n\nCould we arrange a 30-minute intro call with your commercial team? Glad to sign an NDA first.\n\n"+SIG },
       "GR8 Tech": { to:"info@gr8.tech (cc sabina.davide@gr8.tech, Business Development Partner)", subject:"Casino platform integrated to operator's own wallet - Argentina",
         body:"Hi GR8 Tech team,\n\nI'm reaching out on behalf of an operator preparing to launch in Argentina. Your full-stack platform that connects to the operator's own backend via API/webhooks is exactly the model we're after.\n\n"+REQ+"\n\nWould a 30-minute intro call with your commercial team work? Happy to sign an NDA first.\n\n"+SIG },
+      "LuckyStreak": { to:"Hello@luckystreaklive.com", subject:"Live casino platform on operator-side wallet - Argentina-facing operator",
+        body:"Hi LuckyStreak team,\n\nI'm reaching out on behalf of an operator preparing to launch in Argentina. We're evaluating live casino and content-aggregation providers, and your LuckyConnect aggregator - running on a seamless common-wallet API against the operator's own wallet - is a strong fit for the casino-first build we're scoping.\n\n"+REQ+"\n\nCould we set up a 30-minute intro call with your commercial team? Happy to sign an NDA first.\n\n"+SIG },
       "SOFTSWISS": { to:"order@softswiss.com (cc Carla Dualib, Regional BD Manager LatAm)", subject:"Game Aggregator on operator's own wallet - Argentina-facing operator",
         body:"Hi SOFTSWISS team,\n\nI'm contacting you on behalf of an operator preparing to launch in Argentina. Your Game Aggregator's seamless-wallet callback against the operator's own wallet is exactly the integration model we want.\n\n"+REQ+"\n\nCould we set up a 30-minute intro call with your commercial team? Glad to sign an NDA first.\n\n"+SIG },
       "Digitain": { to:"sales@digitain.com (cc alonso.jibaja@digitain.com, Regional Sales Director LatAm)", subject:"Casino + sportsbook on operator-side wallet - Argentina",
