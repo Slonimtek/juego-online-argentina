@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación RFI — propuestas recibidas</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBCMkE0QSIvPjxwYXRoIGQ9Ik0yMi41IDkuMmMtMS42LTEuNi00LTIuNS02LjYtMi41LTQuMSAwLTcgMi4yLTcgNS4yIDAgMyAyLjQgNC4zIDYuNCA1LjEgMy4xLjYgNC4yIDEuMSA0LjIgMi4zIDAgMS4yLTEuNCAyLTMuNiAyLTIuMiAwLTQtLjktNS4zLTIuMyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --navy:#0B2A4A; --navy2:#123a63; --teal:#0E8F89; --teal-br:#0FB5AE; --teal-hi:#8ff0ea;
+    --ok:#127A4A; --okbg:#E4F3EA; --warn:#B45309; --warnbg:#FBECD9; --no:#B3261E; --nobg:#FBEAE8; --off:#5B6B7B; --offbg:#EAEFF4;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.06);
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --ok:#34D399; --okbg:#0F3222; --warn:#FBBF24; --warnbg:#392808; --no:#F87171; --nobg:#3A1615; --off:#9FB0C0; --offbg:#1A2836;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --ok:#34D399; --okbg:#0F3222; --warn:#FBBF24; --warnbg:#392808; --no:#F87171; --nobg:#3A1615; --off:#9FB0C0; --offbg:#1A2836;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --teal:#0E8F89; --teal-br:#0FB5AE; --ok:#127A4A; --okbg:#E4F3EA; --warn:#B45309; --warnbg:#FBECD9; --no:#B3261E; --nobg:#FBEAE8; --off:#5B6B7B; --offbg:#EAEFF4;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1080px; margin:0 auto; padding:26px 20px 60px; }
+  .top{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+  .badge{ width:44px; height:44px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--navy),var(--navy2) 45%,#0FB5AE 130%); box-shadow:var(--shadow); }
+  .top .ttl{ flex:1; min-width:0; } .top .ttl .t1{ font-size:1.18rem; font-weight:800; letter-spacing:-.01em; } .top .ttl .t2{ font-size:.78rem; color:var(--muted); }
+  .tgl{ border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:6px 9px; font-size:.72rem; cursor:pointer; }
+  .tgl:hover{ color:var(--ink); border-color:var(--muted); } .tgl:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  a.back{ display:inline-block; margin:16px 0 0; color:var(--teal); font-size:.8rem; font-weight:700; text-decoration:none; } a.back:hover{ text-decoration:underline; }
+
+  .intro{ margin:18px 0 6px; padding:14px 16px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); font-size:.88rem; }
+  .intro b{ color:var(--teal); }
+  .keyfind{ margin:14px 0; padding:14px 16px; background:var(--warnbg); border:1px solid var(--warn); border-radius:12px; box-shadow:var(--shadow); font-size:.88rem; }
+  .keyfind .kf-tag{ display:inline-block; font-size:.66rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:#fff; background:var(--warn); border-radius:99px; padding:3px 10px; margin-bottom:7px; }
+  .keyfind b{ color:var(--warn); }
+
+  h2.sec{ font-size:.82rem; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); margin:30px 0 4px; }
+  .sec-note{ font-size:.8rem; color:var(--muted); margin-bottom:12px; }
+
+  .tblwrap{ overflow-x:auto; border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); background:var(--surface); }
+  table.rfi{ border-collapse:collapse; width:100%; min-width:920px; font-size:.8rem; }
+  table.rfi th{ text-align:left; font-size:.66rem; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); background:var(--surface2); padding:10px 12px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  table.rfi td{ padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.rfi tr:last-child td{ border-bottom:none; }
+  table.rfi .vend{ font-weight:800; }
+  table.rfi .vend small{ display:block; font-weight:600; color:var(--muted); font-size:.7rem; }
+  .st{ display:inline-block; font-size:.66rem; font-weight:800; padding:2px 9px; border-radius:99px; white-space:nowrap; }
+  .st-parc{ color:var(--warn); background:var(--warnbg); } .st-no{ color:var(--no); background:var(--nobg); } .st-sd{ color:var(--off); background:var(--offbg); }
+  table.rfi a.doclink{ color:var(--teal); font-weight:700; text-decoration:none; white-space:nowrap; } table.rfi a.doclink:hover{ text-decoration:underline; }
+
+  .out{ border:1.5px solid var(--no); border-radius:14px; background:var(--nobg); box-shadow:var(--shadow); overflow:hidden; margin-bottom:12px; }
+  .out-h{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 15px 7px; flex-wrap:wrap; }
+  .out-h .nm{ font-size:.98rem; font-weight:800; color:var(--no); }
+  .out-h .src{ font-size:.72rem; color:var(--muted); }
+  .out-b{ padding:0 15px 14px; font-size:.83rem; }
+  .out-b ul{ margin:8px 0 0; padding-left:18px; } .out-b li{ margin-bottom:5px; }
+  .out-tag{ display:inline-block; font-size:.66rem; font-weight:800; letter-spacing:.03em; text-transform:uppercase; color:#fff; background:var(--no); border-radius:99px; padding:2px 9px; margin-bottom:8px; }
+  .doclink-btn{ display:inline-flex; align-items:center; gap:6px; font-size:.76rem; font-weight:700; color:var(--teal); background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:5px 11px; text-decoration:none; margin-top:9px; }
+  .doclink-btn:hover{ border-color:var(--teal-br); }
+
+  .ref2{ border:1px solid var(--line); border-radius:14px; background:var(--surface); box-shadow:var(--shadow); overflow:hidden; margin-bottom:12px; }
+  .ref2-h{ display:flex; align-items:center; justify-content:space-between; gap:10px; padding:11px 15px 7px; flex-wrap:wrap; }
+  .ref2-h .nm{ font-size:.95rem; font-weight:800; }
+  .ref2-b{ padding:0 15px 14px; font-size:.83rem; color:var(--muted); }
+
+  footer{ margin-top:30px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge" aria-label="logo"><svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg></div>
+    <div class="ttl"><div class="t1">Evaluación RFI — propuestas recibidas</div><div class="t2">9 documentos analizados · comparados contra el mandato</div></div>
+    <button class="tgl" id="tgl" type="button" aria-label="Cambiar tema">◐ Tema</button>
+  </header>
+
+  <a class="back" href="index.html">← Volver al portal</a>
+
+  <div class="intro">
+    Este es el espacio dedicado a las <b>propuestas comerciales concretas</b> que fuimos recibiendo (RFI — Request for Information), separado de la <a href="candidatos.html" style="color:var(--teal);font-weight:700;">lista corta de candidatos</a> por investigación pública. Acá comparamos lo que cada proveedor puso por escrito — precio, modelo de billetera, licencias — contra el mismo mandato de siempre: <b>casino obligatorio</b>, <b>billetera y usuarios del lado del operador</b> (no negociable), reputación y licencia serias.
+  </div>
+
+  <div class="keyfind">
+    <span class="kf-tag">Hallazgo clave</span>
+    <div><b>Ningún documento, de los 9 recibidos, confirma por escrito que acepte una billetera 100% del operador sin imponer su propio PAM.</b> Incluso las dos propuestas de nuestros candidatos ⭐ (GR8 Tech, Digitain) describen su PAM/billetera propia como parte del paquete — la arquitectura "seamless wallet" que promocionan públicamente no aparece garantizada en la letra chica de la oferta comercial real. Hace falta pedirles esa confirmación explícita por escrito antes de avanzar con cualquiera de los dos.</div>
+  </div>
+
+  <h2 class="sec">Tabla comparativa</h2>
+  <div class="sec-note">Estado: <b>Parcial</b> = billetera propia no confirmada como agnóstica · <b>No cumple</b> = impone PAM propio y/o sin licencia · <b>Sin datos</b> = falta información para evaluar.</div>
+  <div class="tblwrap">
+    <table class="rfi">
+      <thead><tr>
+        <th>Proveedor</th><th>Producto</th><th>Billetera operador</th><th>Setup</th><th>Rev share</th><th>Mínimo mensual</th><th>Licencia</th><th>Estado</th><th>Doc</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td class="vend">GR8 Tech ⭐<small>Chipre / candidato shortlist</small></td>
+          <td>Casino + Deportes</td>
+          <td>No confirmada — el diagrama propio muestra "PAM &amp; Seamless Wallet" como componente integrado suyo</td>
+          <td>€25.000 (+€10k/GEO extra)</td>
+          <td>Plataforma 4,5%→4%; deportes 12/11/10%; casino 6-13% según proveedor</td>
+          <td>€0 → €5k → €10k → €15k (escalado)</td>
+          <td>ONJN (Rumania), MGA</td>
+          <td><span class="st st-parc">Parcial</span></td>
+          <td><a class="doclink" href="rfi/gr8tech-turnkey-proposal.pdf" target="_blank" rel="noopener">Propuesta ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">Digitain<small>Armenia / candidato shortlist</small></td>
+          <td>Casino + Deportes<br><span style="color:var(--muted);font-size:.74rem;">(este doc no menciona póker)</span></td>
+          <td>No confirmada — cita textual: "single account and wallet" propio (Centrivo)</td>
+          <td>€80.000 (Full-TurnKey)</td>
+          <td>Deportes 14/13/12/11/10% por tramo de GGR</td>
+          <td>€2k → €6k → €15k → €20k (escalado)</td>
+          <td>No mencionada en este documento</td>
+          <td><span class="st st-parc">Parcial</span></td>
+          <td><a class="doclink" href="rfi/digitain-turnkey-offer.pdf" target="_blank" rel="noopener">Propuesta ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">BetArts<small>lead nuevo — ver descarte abajo</small></td>
+          <td>Casino + Deportes</td>
+          <td>No — PAM propio incluido en el setup</td>
+          <td>€30.000 + Custom Skin €25k + licencia Anjouan €40k (add-on)</td>
+          <td>Deportes 12% flat; casino 8-15%</td>
+          <td>€7.000 (desde mes 3)</td>
+          <td>Solo Anjouan (offshore, bajo perfil)</td>
+          <td><span class="st st-no">No cumple</span></td>
+          <td><a class="doclink" href="rfi/betarts-proposal.pdf" target="_blank" rel="noopener">Propuesta ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">Blokotech<small>lead nuevo — ver descarte abajo</small></td>
+          <td>Casino + Deportes (vía terceros)</td>
+          <td>No — PAM propio ("multi-wallet" interno, no billetera externa)</td>
+          <td>USD 20.000 (50% devuelto a los $300k GGR)</td>
+          <td>Casino 3%/2,5%/2% escalado; deportes 12%+3% GGR</td>
+          <td>$1.500 (mes 3-6) → $3.000 (mes 6+)</td>
+          <td>Ninguna propia declarada</td>
+          <td><span class="st st-no">No cumple</span></td>
+          <td><a class="doclink" href="rfi/blokotech-proposal.pdf" target="_blank" rel="noopener">Propuesta ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">LSW / Betronic Ltd<small>lead nuevo — ver descarte abajo</small></td>
+          <td>Casino + Deportes (vía Digitain)</td>
+          <td>No — panel de administración + sistema de agentes propio</td>
+          <td>USD 13.000 total (llave en mano)</td>
+          <td>11,2% (deportes, Digitain) a 15-18% (casino)</td>
+          <td>$2.000 (mes 1) → $5.000 (mes 3+)</td>
+          <td>No mencionada</td>
+          <td><span class="st st-no">No cumple</span></td>
+          <td><a class="doclink" href="rfi/lsw-betronic-628.pdf" target="_blank" rel="noopener">Propuesta ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">Vantera / BSW LLC<small>ya descartado — ver <a href="candidatos.html" style="color:var(--teal);">Leads descartados</a></small></td>
+          <td>Casino + Deportes (vía Digitain + Pragmatic Play)</td>
+          <td>No, por defecto (sistema de agentes) — menciona una alternativa de billetera del cliente vía API, sin desarrollar</td>
+          <td>USD 13.000 total</td>
+          <td>12% los primeros 3 meses (objetivo GGR $500k/mes)</td>
+          <td>$5.000 (desde mes 1)</td>
+          <td>Ninguna</td>
+          <td><span class="st st-no">No cumple</span></td>
+          <td><a class="doclink" href="rfi/vantera-oferta-v2.pdf" target="_blank" rel="noopener">Propuesta ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">Sin identificar<small>rate card suelto</small></td>
+          <td>Solo casino (contenido)</td>
+          <td>No aplica — es rate card de contenido, no de plataforma</td>
+          <td>—</td>
+          <td>9%-19% según proveedor de juego</td>
+          <td>Algunos agregadores: desde €1.500/mes</td>
+          <td>Rate card para <b>mercados no regulados</b></td>
+          <td><span class="st st-sd">Sin datos</span></td>
+          <td><a class="doclink" href="rfi/casino-rates-sin-identificar.pdf" target="_blank" rel="noopener">Rate card ↗</a></td>
+        </tr>
+        <tr>
+          <td class="vend">Demetra<small>deck visual</small></td>
+          <td>Casino + Deportes (visual, sin confirmar detrás)</td>
+          <td>No confirmada — panel de agentes con comisiones en guaraníes (PYG)</td>
+          <td>—</td>
+          <td>No incluido en el material</td>
+          <td>No incluido en el material</td>
+          <td>No mencionada</td>
+          <td><span class="st st-sd">Sin datos</span></td>
+          <td><a class="doclink" href="rfi/demetra-v1.pdf" target="_blank" rel="noopener">Deck ↗</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sec-note" style="margin-top:8px;">GR8 Tech también compartió un deck de personalización visual (temas de color, íconos, imágenes del front-end) sin datos comerciales — <a class="doclink" href="rfi/gr8tech-design-system.pdf" target="_blank" rel="noopener">verlo acá ↗</a>; no se pondera en la tabla porque no aporta evidencia técnica ni comercial.</div>
+
+  <h2 class="sec">Nuevos leads descartados de esta ronda</h2>
+  <div class="sec-note">Mismo criterio que ya aplicamos con Vantera: se documentan para dejar registro de que fueron evaluados y por qué no avanzan.</div>
+
+  <div class="out">
+    <div class="out-h"><div class="nm">BetArts</div><div class="src">Propuesta comercial recibida</div></div>
+    <div class="out-b">
+      <span class="out-tag">No cumple el mandato</span>
+      <div>Propuesta de casino + apuestas deportivas con PAM propio incluido en el setup ("PAM setup" es parte del fee de 30.000€).</div>
+      <ul>
+        <li><b>Todas las capturas de pantalla del producto muestran la marca "SpinRain"</b>, no "BetArts" — mientras el documento afirma textualmente ser "technology-first, fully in-house built solution with zero third-party dependencies". Mismo patrón que detectamos en Vantera: presentarse como dueño de tecnología propia mientras se muestra el motor de un tercero.</li>
+        <li>Sin licencia de juego propia; la única mencionada es <b>Anjouan</b> (jurisdicción offshore de bajo perfil regulatorio) y como línea de fee adicional (40.000€), no incluida por defecto.</li>
+        <li>Sin billetera única del operador — venden su propio sistema de cuentas.</li>
+        <li>Sin nombre de contacto ni email en las 12 páginas del documento.</li>
+      </ul>
+      <a class="doclink-btn" href="rfi/betarts-proposal.pdf" target="_blank" rel="noopener">📄 Ver propuesta</a>
+    </div>
+  </div>
+
+  <div class="out">
+    <div class="out-h"><div class="nm">Blokotech</div><div class="src">Propuesta comercial recibida (41 páginas)</div></div>
+    <div class="out-b">
+      <span class="out-tag">No cumple el mandato</span>
+      <div>Propuesta detallada de casino (vía Evolution/Pragmatic Play/NetEnt + agregadores Hub88 y QTech) y apuestas (vía terceros: Altenar, First Sports, Odds88, SW3 — no tienen motor propio).</div>
+      <ul>
+        <li>Su "Sistema PAM" es el núcleo del producto — ofrecen "multi-wallet" pero es gestión de métodos de pago dentro de <b>su propio</b> sistema de cuentas, no una integración agnóstica con la billetera del operador.</li>
+        <li>No declaran ninguna licencia de juego propia en las 41 páginas.</li>
+        <li><b>Desajuste de entidad legal:</b> el documento se presenta como "Blokotech" en cada página, pero la contraparte que firma los términos es una empresa distinta ("Palmcore Ltd.", sin jurisdicción indicada), sin explicar la relación entre ambas.</li>
+        <li>Equipo disperso sin sede regulatoria clara (Malta, Venezuela y Dubái) y cero contenido específico de Argentina pese a ser el mercado del proyecto — parece una plantilla genérica reutilizada (incluye un artefacto de edición: un nombre de otro prospecto que quedó pegado por error en medio del texto).</li>
+      </ul>
+      <a class="doclink-btn" href="rfi/blokotech-proposal.pdf" target="_blank" rel="noopener">📄 Ver propuesta</a>
+    </div>
+  </div>
+
+  <div class="out">
+    <div class="out-h"><div class="nm">LSW / Betronic Ltd</div><div class="src">Oferta comercial recibida (№ 628)</div></div>
+    <div class="out-b">
+      <span class="out-tag">No cumple el mandato</span>
+      <div>Oferta de sitio "llave en mano" de <b>Betronic Ltd</b> (Malta) — apuestas deportivas vía Digitain (11,2% revenue share) + amplio catálogo de casino (Evolution, Pragmatic Play, Amusnet y el agregador Economix, entre otros).</div>
+      <ul>
+        <li>Arquitectura de <b>panel de administración + sistema de agentes</b> propio de Betronic — mismo patrón que Vantera, sin billetera única del operador.</li>
+        <li>Sin ninguna licencia de juego mencionada (ni de Betronic ni de la solución ofrecida).</li>
+        <li>Precio total USD 13.000 (llave en mano) + piso mensual escalado de USD 2.000 a USD 5.000 desde el mes 3.</li>
+        <li>Sin nombre de contacto ni email de Betronic en el documento.</li>
+      </ul>
+      <a class="doclink-btn" href="rfi/lsw-betronic-628.pdf" target="_blank" rel="noopener">📄 Ver oferta</a>
+    </div>
+  </div>
+
+  <h2 class="sec">Documentos sin datos suficientes para evaluar</h2>
+  <div class="sec-note">No se pueden puntuar contra el mandato todavía — falta información básica (proveedor, términos comerciales o licencia).</div>
+
+  <div class="ref2">
+    <div class="ref2-h"><div class="nm">Rate card de casino (proveedor sin identificar)</div></div>
+    <div class="ref2-b">Tabla de revenue share por proveedor de contenido de casino (Evolution, Pragmatic Play, NetEnt, Playtech, Microgaming y otros, 9%-19% según proveedor), explícitamente para <b>mercados no regulados</b>. No trae logo ni dominio que identifique de qué plataforma es este rate card, no incluye apuestas deportivas reales, y no menciona billetera ni licencia. Para usarlo necesitamos primero identificar de qué proveedor es y pedir su rate card para mercados regulados (relevante para Argentina). <a class="doclink" href="rfi/casino-rates-sin-identificar.pdf" target="_blank" rel="noopener">Ver documento ↗</a></div>
+  </div>
+
+  <div class="ref2">
+    <div class="ref2-h"><div class="nm">Demetra</div></div>
+    <div class="ref2-b">Deck de capturas de pantalla (lobby de casino + apuestas, 4 temas de color, panel de administración con reporte de regalías y comisiones jerárquicas en guaraníes paraguayos). No trae fecha, licencia, contacto ni términos comerciales — solo mockups visuales. El panel de agentes con comisiones sugiere un modelo similar a los ya descartados, pero no hay evidencia suficiente para confirmarlo o para completar una fila completa en la tabla. <a class="doclink" href="rfi/demetra-v1.pdf" target="_blank" rel="noopener">Ver documento ↗</a></div>
+  </div>
+
+  <footer>
+    <div class="d">Los documentos originales se comparten tal como los recibimos. El análisis y la tabla son nuestra lectura; la debida diligencia final es del operador. No es asesoría legal.</div>
+    <div class="badge" style="width:30px;height:30px;border-radius:8px;"><svg width="19" height="19" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg></div>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var root=document.documentElement, tgl=document.getElementById('tgl');
+    tgl.addEventListener('click',function(){ var cur=root.getAttribute('data-theme'); if(!cur){cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';} root.setAttribute('data-theme', cur==='dark'?'light':'dark'); });
+  })();
+</script>
+</body>
+</html>
