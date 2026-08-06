@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Casino Wallet de Finpro — producto</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBCMkE0QSIvPjxwYXRoIGQ9Ik0yMi41IDkuMmMtMS42LTEuNi00LTIuNS02LjYtMi41LTQuMSAwLTcgMi4yLTcgNS4yIDAgMyAyLjQgNC4zIDYuNCA1LjEgMy4xLjYgNC4yIDEuMSA0LjIgMi4zIDAgMS4yLTEuNCAyLTMuNiAyLTIuMiAwLTQtLjktNS4zLTIuMyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --navy:#0B2A4A; --navy2:#123a63; --teal:#0E8F89; --teal-br:#0FB5AE; --teal-hi:#8ff0ea; --teal-ink:#04201e;
+    --done:#127A4A; --done-bg:#E4F3EA; --curso:#B45309; --curso-bg:#FBECD9; --prox:#526074; --prox-bg:#EAEFF4;
+    --ok:#127A4A; --no:#B3261E; --nobg:#FBEAE8; --ours-bg:#FDF3F2;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --teal-ink:#04201e;
+    --done:#34D399; --done-bg:#0F3222; --curso:#FBBF24; --curso-bg:#392808; --prox:#9FB0C0; --prox-bg:#1A2836;
+    --ok:#34D399; --no:#F87171; --nobg:#3A1615; --ours-bg:#241413;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --teal-ink:#04201e;
+    --done:#34D399; --done-bg:#0F3222; --curso:#FBBF24; --curso-bg:#392808; --prox:#9FB0C0; --prox-bg:#1A2836;
+    --ok:#34D399; --no:#F87171; --nobg:#3A1615; --ours-bg:#241413;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --teal:#0E8F89; --teal-br:#0FB5AE; --teal-ink:#04201e;
+    --done:#127A4A; --done-bg:#E4F3EA; --curso:#B45309; --curso-bg:#FBECD9; --prox:#526074; --prox-bg:#EAEFF4;
+    --ok:#127A4A; --no:#B3261E; --nobg:#FBEAE8; --ours-bg:#FDF3F2;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:26px 20px 60px; }
+  h2{ font-size:1.02rem; letter-spacing:.01em; margin:0 0 14px; }
+  h3{ font-size:.95rem; margin:0; }
+  .eyebrow{ font-size:.66rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); }
+  section{ margin-top:30px; }
+
+  .top{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+  .badge{ width:44px; height:44px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--navy),var(--navy2) 45%,#0FB5AE 130%); box-shadow:var(--shadow); }
+  .top .ttl{ flex:1; min-width:0; }
+  .top .ttl .t1{ font-size:1.18rem; font-weight:800; letter-spacing:-.01em; }
+  .top .ttl .t2{ font-size:.78rem; color:var(--muted); }
+  .stamp{ font-size:.7rem; color:var(--muted); display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--curso); box-shadow:0 0 0 3px var(--curso-bg); }
+  .tgl{ border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:6px 9px; font-size:.72rem; cursor:pointer; }
+  .tgl:hover{ color:var(--ink); border-color:var(--muted); }
+  .tgl:focus-visible,.seg button:focus-visible,.ghost:focus-visible,a.back:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  a.back{ display:inline-block; margin:26px 0 0; color:var(--teal); font-size:.8rem; font-weight:700; text-decoration:none; }
+  a.back:hover{ text-decoration:underline; }
+
+  .thesis{ margin:20px 0; padding:16px 18px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); }
+  .thesis .lead{ font-size:1.04rem; font-weight:600; text-wrap:balance; }
+  .thesis .lead b{ color:var(--teal); }
+  .note{ font-size:.83rem; color:var(--muted); }
+
+  /* ---------- demo ---------- */
+  .ctl{ display:flex; gap:9px; align-items:center; flex-wrap:wrap; margin:0 0 14px; }
+  .seg{ display:flex; background:var(--surface); border:1px solid var(--line); border-radius:99px; padding:3px; box-shadow:var(--shadow); }
+  .seg button{ font:inherit; font-size:.8rem; font-weight:700; border:0; background:none; color:var(--muted);
+               padding:6px 14px; border-radius:99px; cursor:pointer; white-space:nowrap; }
+  .seg button[aria-pressed="true"]{ background:var(--teal-br); color:var(--teal-ink); }
+  .seg button.risk[aria-pressed="true"]{ background:var(--no); color:#fff; }
+  .ghost{ font:inherit; font-size:.78rem; font-weight:700; border:1px solid var(--line); background:var(--surface);
+          color:var(--muted); border-radius:99px; padding:7px 14px; cursor:pointer; }
+  .ghost:hover{ color:var(--ink); }
+  .route{ font-family:var(--mono); font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+
+  .card{ background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); }
+  .flow{ padding:22px 20px 18px; }
+  .rail{ position:relative; display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:34px; }
+  .rail::before{ content:""; position:absolute; left:12.5%; right:12.5%; top:24px; height:2px; background:var(--line); }
+  .prog{ position:absolute; left:12.5%; top:24px; height:2px; background:var(--teal-br); width:0; transition:width .5s ease; }
+  .prog.bad{ background:var(--no); }
+  .nd{ display:flex; flex-direction:column; align-items:center; gap:8px; text-align:center; }
+  .nd .ic{ width:48px; height:48px; border-radius:14px; background:var(--surface2); border:1px solid var(--line);
+           display:grid; place-items:center; transition:background .3s,border-color .3s,transform .3s; }
+  .nd .ic svg{ width:21px; height:21px; stroke:var(--muted); fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+  .nd.done .ic{ background:var(--done-bg); border-color:var(--teal-br); }
+  .nd.done .ic svg{ stroke:var(--ok); }
+  .nd.on .ic{ background:var(--teal-br); border-color:var(--teal-br); transform:scale(1.08); }
+  .nd.on .ic svg{ stroke:var(--teal-ink); }
+  .nd.bad .ic{ background:var(--no); border-color:var(--no); transform:scale(1.08); }
+  .nd.bad .ic svg{ stroke:#fff; }
+  .nd .lb{ font-size:.76rem; font-weight:700; color:var(--muted); line-height:1.25; }
+  .nd.on .lb,.nd.done .lb,.nd.bad .lb{ color:var(--ink); }
+  .pill{ position:absolute; top:-30px; z-index:2; transform:translateX(-50%); background:var(--teal-br); color:var(--teal-ink);
+         font-size:.65rem; font-weight:800; letter-spacing:.03em; padding:4px 10px; border-radius:99px; white-space:nowrap;
+         transition:left .55s cubic-bezier(.4,0,.2,1); }
+  .pill.bad{ background:var(--no); color:#fff; }
+  .say{ margin-top:22px; padding-top:16px; border-top:1px solid var(--line); font-size:.88rem; color:var(--muted); min-height:56px; }
+  .say .k{ font-weight:800; color:var(--teal); }
+  .say.bad .k{ color:var(--no); }
+  .say .det{ display:block; margin-top:5px; font-family:var(--mono); font-size:.72rem; }
+  .assure{ display:flex; gap:18px; flex-wrap:wrap; margin-top:14px; padding-top:13px; border-top:1px solid var(--line); font-size:.76rem; color:var(--muted); }
+  .assure b{ color:var(--ink); }
+
+  .lands{ text-align:center; font-size:.78rem; color:var(--muted); margin:14px 0; }
+  .dash-h{ display:flex; align-items:center; gap:10px; padding:14px 18px; border-bottom:1px solid var(--line); flex-wrap:wrap; }
+  .live{ margin-left:auto; display:flex; align-items:center; gap:6px; font-size:.72rem; color:var(--muted); }
+  .led{ width:7px; height:7px; border-radius:50%; background:var(--teal-br); }
+  .bal{ padding:14px 18px; display:flex; align-items:flex-end; gap:12px; flex-wrap:wrap; }
+  .bal .n{ font-size:1.7rem; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+  .bal .l{ font-size:.66rem; color:var(--muted); text-transform:uppercase; letter-spacing:.1em; font-weight:800; }
+  .acct{ margin-left:auto; font-family:var(--mono); font-size:.7rem; color:var(--muted); background:var(--surface2);
+         border:1px solid var(--line); border-radius:99px; padding:4px 10px; }
+  .tw{ overflow-x:auto; }
+  table{ width:100%; border-collapse:collapse; min-width:560px; }
+  th{ text-align:left; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted);
+      padding:9px 18px; border-bottom:1px solid var(--line); font-weight:800; }
+  td{ padding:11px 18px; border-bottom:1px solid var(--line); font-size:.82rem; }
+  tr:last-child td{ border-bottom:0; }
+  td.num{ font-variant-numeric:tabular-nums; font-weight:700; text-align:right; }
+  td.t{ font-family:var(--mono); font-size:.73rem; color:var(--muted); }
+  .who2{ font-size:.73rem; color:var(--muted); }
+  .who2 b{ display:block; font-size:.82rem; color:var(--ink); }
+  .chip{ font-size:.63rem; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:3px 9px; border-radius:99px; }
+  .c-ok{ color:var(--done); background:var(--done-bg); }
+  .c-wait{ color:var(--curso); background:var(--curso-bg); }
+  .c-no{ color:var(--no); background:var(--nobg); }
+  .pos{ color:var(--ok); }
+  tr.fresh{ animation:in .45s ease both; }
+  @keyframes in{ from{ opacity:0; transform:translateY(-6px);} to{ opacity:1; transform:none;} }
+
+  /* ---------- capacidades ---------- */
+  .caps{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:720px){ .caps{ grid-template-columns:1fr; } }
+  .capc{ background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:16px 18px; }
+  .capc.lead{ grid-column:1 / -1; border:2px solid var(--teal-br); }
+  .capc .k{ font-size:.62rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); }
+  .capc .n{ font-size:.98rem; font-weight:800; margin:3px 0 8px; }
+  .capc .d{ font-size:.85rem; color:var(--muted); }
+  .capc .d b{ color:var(--ink); }
+  .gr{ margin-top:12px; padding-top:12px; border-top:1px solid var(--line); display:flex; flex-direction:column; gap:9px; }
+  .g{ display:grid; grid-template-columns:5.6rem 1fr; gap:10px; align-items:start; font-size:.82rem; color:var(--muted); }
+  @media (max-width:480px){ .g{ grid-template-columns:1fr; gap:3px; } }
+  .g b{ color:var(--ink); }
+  .g .t{ font-size:.6rem; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:3px 7px; border-radius:99px; justify-self:start; }
+  .g.si .t{ color:var(--ok); background:var(--done-bg); }
+  .g.no .t{ color:var(--no); background:var(--nobg); }
+
+  .cols{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:720px){ .cols{ grid-template-columns:1fr; } }
+  .scope{ border:1px solid var(--line); border-radius:14px; overflow:hidden; box-shadow:var(--shadow); background:var(--surface); }
+  .scope-h{ padding:11px 16px; font-weight:800; font-size:.9rem; color:#fff; }
+  .scope.ok .scope-h{ background:var(--ok); } .scope.no .scope-h{ background:var(--no); }
+  .scope ul{ list-style:none; margin:0; padding:12px 16px; }
+  .scope li{ position:relative; padding:0 0 11px 22px; font-size:.83rem; color:var(--muted); }
+  .scope li:last-child{ padding-bottom:2px; }
+  .scope li::before{ position:absolute; left:0; top:0; font-weight:800; }
+  .scope.ok li::before{ content:"✓"; color:var(--ok); } .scope.no li::before{ content:"✕"; color:var(--no); }
+  .scope li b{ color:var(--ink); display:block; }
+
+  footer{ margin-top:34px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center; gap:12px; justify-content:space-between; flex-wrap:wrap; }
+  footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
+  @media (max-width:560px){ .rail{ grid-template-columns:repeat(2,1fr); row-gap:18px; } .rail::before,.prog,.pill{ display:none; } }
+  @media (prefers-reduced-motion:reduce){ *{ animation:none !important; transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge" aria-label="logo">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg>
+    </div>
+    <div class="ttl">
+      <div class="t1">Casino Wallet de Finpro</div>
+      <div class="t2">La billetera del operador sobre rieles bancarios argentinos — qué hace, cómo se mueve la plata y qué no cubre</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <button class="tgl" id="tgl" type="button" aria-label="Cambiar tema">◐ Tema</button>
+      <div class="stamp"><span class="dot"></span> Actualizado 6 ago 2026</div>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="eyebrow">Por qué esta página existe</div>
+    <div class="lead">La búsqueda de plataforma deja <b>fuera de alcance</b> la billetera, el saldo del jugador, los pagos y la bancarización: son del operador. <b>Casino Wallet de Finpro</b> es el candidato para cubrir esa capa — acredita depósitos contra el movimiento bancario real, verifica a nombre de quién está la cuenta antes de pagar un retiro, y deja comprobante de red por cada pago.</div>
+  </div>
+
+  <section>
+    <h2>Cómo se mueve la plata</h2>
+    <p class="note" style="margin:0 0 14px;">Elegí un recorrido y miralo pasar. El tercero es el que importa: el control que frena un retiro antes de mover un peso.</p>
+
+    <div class="ctl">
+      <div class="seg" role="group" aria-label="Elegir recorrido">
+        <button type="button" data-f="dep" aria-pressed="true">Depósito</button>
+        <button type="button" data-f="ret" aria-pressed="false">Retiro</button>
+        <button type="button" data-f="blk" class="risk" aria-pressed="false">Retiro bloqueado</button>
+      </div>
+      <button type="button" class="ghost" id="pp">Pausar</button>
+      <span class="route" id="route">Jugador → Banco → Billetera</span>
+    </div>
+
+    <div class="card flow">
+      <div class="rail" id="rail"><div class="prog" id="prog"></div><div class="pill" id="pill">confirmación</div></div>
+      <p class="say" id="say"></p>
+      <div class="assure">
+        <span><b>Segundos</b> de punta a punta.</span>
+        <span><b>Comprobante de red</b> por cada pago.</span>
+        <span><b>Sólo tus cuentas</b>: nunca ves movimientos de otro cliente.</span>
+      </div>
+    </div>
+
+    <p class="lands">↓ y queda reflejado en el tablero</p>
+
+    <div class="card">
+      <div class="dash-h">
+        <h3>Movimientos</h3>
+        <span class="live"><span class="led"></span> En vivo</span>
+      </div>
+      <div class="bal">
+        <div><div class="l">Saldo operativo</div><div class="n" id="bal">$48.500</div></div>
+        <span class="acct">Cuenta 564736473 · CVU de la casa</span>
+      </div>
+      <div class="tw">
+        <table>
+          <thead><tr><th>Hora</th><th>Tipo</th><th>Contraparte</th><th style="text-align:right">Monto</th><th>Estado</th></tr></thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </div>
+    <p class="note" style="margin-top:10px;">Demostración con datos ficticios; refleja el comportamiento real de la integración.</p>
+  </section>
+
+  <section>
+    <h2>Qué puede hacer la billetera</h2>
+    <p class="note" style="margin:0 0 14px;">Cada capacidad declara lo que garantiza y lo que no. Lo segundo importa más: es donde vive el riesgo operativo.</p>
+    <div class="caps">
+
+      <article class="capc lead">
+        <div class="k">Control antifraude principal</div>
+        <div class="n">Validación de titularidad</div>
+        <div class="d">Antes de pagar un retiro, la billetera consulta el CVU o el alias que cargó el jugador y devuelve <b>el nombre y el CUIT del titular real de esa cuenta</b>. Es el control que la mayoría de los operadores resuelve a ojo, y el que separa un retiro legítimo de un desvío a la cuenta de un tercero.</div>
+        <div class="gr">
+          <div class="g si"><span class="t">Garantiza</span><span>Que el destino existe, y devuelve a nombre de quién está: nombre completo, CUIT/CUIL y tipo de persona. Funciona con CVU y con alias.</span></div>
+          <div class="g no"><span class="t">No hace</span><span>No compara automáticamente contra la identidad del jugador. La regla de «sólo pago a cuenta propia» la aplica la billetera, con el dato que esta consulta devuelve.</span></div>
+        </div>
+      </article>
+
+      <article class="capc">
+        <div class="k">Salida de fondos</div><div class="n">Retiro al jugador</div>
+        <div class="d">Envío por CVU, de a uno o en lote. Cada retiro lleva el identificador propio de la operación y el lote se despacha en una sola llamada, con una referencia de proceso para seguirlo.</div>
+        <div class="gr">
+          <div class="g si"><span class="t">Garantiza</span><span>Recepción del lote confirmada al instante, con identificador de proceso para consultar estado y resultado.</span></div>
+          <div class="g no"><span class="t">No hace</span><span><b>Aceptado no es pagado.</b> La confirmación es de recepción del lote; el resultado por transacción llega después.</span></div>
+        </div>
+      </article>
+
+      <article class="capc">
+        <div class="k">Prueba</div><div class="n">Comprobante trazable</div>
+        <div class="d">Cada transferencia liquidada devuelve su identificador de la red de pagos (Coelsa), más CUIT y nombre de origen y destino, monto, fecha y código de autorización. Es lo que le mostrás al jugador que dice «no me llegó».</div>
+        <div class="gr">
+          <div class="g si"><span class="t">Garantiza</span><span>Identificador único por transacción y detalle completo del movimiento, consultable en cualquier momento posterior.</span></div>
+          <div class="g no"><span class="t">No hace</span><span>No aparece antes de que el proceso termine: hay que pedir el resultado detallado, no alcanza con el estado del lote.</span></div>
+        </div>
+      </article>
+
+      <article class="capc">
+        <div class="k">Entrada de fondos</div><div class="n">Acreditación de depósito</div>
+        <div class="d">El jugador transfiere a la cuenta recaudadora y avisa. La billetera busca ese movimiento por código de autorización, por identificador de red, o por monto más CVU dentro de una ventana de tiempo.</div>
+        <div class="gr">
+          <div class="g si"><span class="t">Garantiza</span><span>Búsqueda acotada a las cuentas y CVUs de la operación: nunca devuelve movimientos de otro cliente. Distingue «encontrado» de «hay más de uno igual».</span></div>
+          <div class="g no"><span class="t">No hace</span><span><b>No avisa cuando entra plata: hay que preguntar.</b> La latencia de acreditación la fija cada cuánto se consulta, no la red.</span></div>
+        </div>
+      </article>
+
+      <article class="capc">
+        <div class="k">Tesorería</div><div class="n">Saldo operativo</div>
+        <div class="d">Cuánta plata hay disponible en la cuenta recaudadora en este momento, para decidir si el lote de retiros sale hoy o espera.</div>
+        <div class="gr">
+          <div class="g si"><span class="t">Garantiza</span><span>Saldo disponible de la cuenta, en tiempo de consulta, con código de autorización propio.</span></div>
+          <div class="g no"><span class="t">No hace</span><span>Es el saldo de la cuenta bancaria, no la suma de los saldos de los jugadores. Cuadrar una contra la otra es trabajo de la billetera.</span></div>
+        </div>
+      </article>
+
+      <article class="capc">
+        <div class="k">Operación</div><div class="n">Aviso de cierre de lote</div>
+        <div class="d">Cuando el lote de retiros termina, Finpro le pega a una URL nuestra con los contadores del cierre: cuántas transacciones salieron bien, cuántas fallaron, cuántas se procesaron.</div>
+        <div class="gr">
+          <div class="g si"><span class="t">Garantiza</span><span>Enterarse del cierre sin consultar en bucle, con los contadores del lote y las marcas de tiempo de inicio y fin.</span></div>
+          <div class="g no"><span class="t">No hace</span><span>Trae contadores, no detalle: no dice cuál falló ni por qué. Por eso el aviso se usa como disparador, nunca como orden de acreditación.</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section>
+    <h2>Controles y límites</h2>
+    <div class="cols">
+      <div class="scope ok">
+        <div class="scope-h">Qué protege a la casa</div>
+        <ul>
+          <li><b>Gate de titularidad antes de pagar</b>El control más fuerte del sistema. Ningún retiro se despacha sin saber a nombre de quién está la cuenta de destino.</li>
+          <li><b>Doble confirmación antes de dar por cerrado</b>Nunca acreditar un depósito ni marcar un retiro como pagado contra un aviso. Siempre contra el resultado detallado, que trae el identificador de red.</li>
+          <li><b>Identificador propio por operación</b>Cada depósito acreditado y cada retiro despachado queda atado a un identificador único de la billetera, de modo que un reintento no se convierta en un segundo movimiento.</li>
+          <li><b>Alcance acotado por cliente</b>La búsqueda de transferencias entrantes está limitada a las cuentas y CVUs de la operación. No hay forma de ver movimientos de otro cliente de Finpro.</li>
+        </ul>
+      </div>
+      <div class="scope no">
+        <div class="scope-h">Qué no hace hoy</div>
+        <ul>
+          <li><b>No detecta reversas</b>Un depósito acreditado y después revertido no genera señal. Es el hueco de mayor impacto económico: el jugador ya jugó con plata que volvió a su banco.</li>
+          <li><b>No avisa los depósitos entrantes</b>La confirmación es por consulta, no por notificación. Acreditar en segundos exige preguntar seguido, y preguntar seguido tiene costo.</li>
+          <li><b>Los motivos de rechazo no están normalizados</b>Saldo insuficiente, CVU inexistente o límite excedido todavía no se distinguen entre sí, así que no se le puede explicar al jugador por qué falló.</li>
+          <li><b>No define KYC, límites ni prevención de lavado</b>Esa capa es del operador. Los rieles mueven plata; no deciden si corresponde moverla.</li>
+          <li><b>No lleva el saldo por jugador</b>El ledger, la conciliación y el arqueo son de la billetera. Los rieles sólo conocen la cuenta recaudadora.</li>
+          <li><b>Un solo banco conectado</b>La integración está preparada para varios; hoy hay uno probado (Creedence).</li>
+          <li><b>Sin ambiente productivo</b>Todo lo verificado hasta acá corre contra desarrollo.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <a class="back" href="index.html">← Volver al portal</a>
+
+  <footer>
+    <div class="d">Capacidades verificadas contra la documentación de integración de Finpro (guía v1.2 y verificación de transferencias v1.0), a ago-2026. Material de alcance técnico: no constituye asesoría legal ni de inversión. La billetera, la verificación de identidad y la prevención de lavado son responsabilidad del operador.</div>
+    <div class="badge" style="width:30px;height:30px;border-radius:8px;">
+      <svg width="19" height="19" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg>
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('tgl');
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){ cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+    root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+  });
+
+  var I={
+   pago:'<svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>',
+   lupa:'<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+   banco:'<svg viewBox="0 0 24 24"><path d="M3 10h18M5 10v9m14-9v9M9 10v9m6-9v9M2 19h20M12 3l9 5H3z"/></svg>',
+   escudo:'<svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg>',
+   stop:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 8l8 8"/></svg>',
+   salida:'<svg viewBox="0 0 24 24"><path d="M4 12h13M13 7l5 5-5 5"/><path d="M4 4v16"/></svg>',
+   tablero:'<svg viewBox="0 0 24 24"><path d="M4 20V10m5 10V5m5 15v-7m5 7V8"/></svg>',
+   recibo:'<svg viewBox="0 0 24 24"><path d="M6 3v18l2-1.5L10 21l2-1.5L14 21l2-1.5L18 21V3z"/><path d="M9 8h6M9 12h6"/></svg>'};
+
+  var F={
+   dep:{ruta:'Jugador → Banco → Billetera',pill:'confirmación',pasos:[
+     {i:I.pago,l:'El jugador paga',k:'1. El jugador transfiere',t:'Manda la plata desde su banco a la cuenta recaudadora y avisa el monto.',d:''},
+     {i:I.lupa,l:'Buscamos el movimiento',k:'2. Buscamos ese movimiento',t:'Por código de autorización; si no lo tiene, por monto + CVU dentro de una ventana de tiempo.',d:'prioridad: código → identificador de red → monto+CVU'},
+     {i:I.banco,l:'Confirmado',k:'3. Confirmado contra el banco',t:'Encontrado y acreditado. Si todavía no entró, se reintenta: no es un rechazo.',d:'coelsa_id R7ZG0QNDWKMQLRPG9EXYPO'},
+     {i:I.tablero,l:'En el tablero',k:'4. Acreditado al jugador',t:'Queda en su saldo, atado al identificador del movimiento para que no pueda acreditarse dos veces.',d:''}],
+    fin:{tipo:'Depósito',quien:'Jugador #4821',sub:'Depósito de jugador',monto:250,pos:true,chip:'c-ok',est:'Acreditado',delta:250}},
+   ret:{ruta:'Jugador → Billetera → Banco',pill:'titularidad',pasos:[
+     {i:I.recibo,l:'Pide retirar',k:'1. El jugador pide retirar',t:'Carga su CVU o su alias y el monto que quiere sacar.',d:'alias: cuenta.mp'},
+     {i:I.escudo,l:'Verificamos titular',k:'2. Verificamos a nombre de quién está',t:'La consulta devuelve nombre y CUIT del titular real. Coincide con el jugador: sigue.',d:'MARÍA GONZÁLEZ · CUIT 20987654321 · coincide'},
+     {i:I.salida,l:'Despachamos',k:'3. Despachamos el pago',t:'Sale por CVU con nuestro identificador de operación. Aceptado no es pagado: esperamos el resultado.',d:'proceso 660e8400-e29b-41d4-a716'},
+     {i:I.tablero,l:'Comprobante',k:'4. Pagado, con comprobante',t:'El resultado detallado trae el identificador de la red. Eso es lo que le mostrás al jugador si reclama.',d:'coelsa_id R7ZG0QNDWKMQLRPG9EXYPO'}],
+    fin:{tipo:'Retiro',quien:'Jugador #2048',sub:'Pago · CVU ****7129',monto:600,pos:false,chip:'c-ok',est:'Pagado',delta:-600}},
+   blk:{ruta:'Jugador → Billetera → ✕',pill:'titularidad',malo:1,pasos:[
+     {i:I.recibo,l:'Pide retirar',k:'1. El jugador pide retirar',t:'Carga un CVU y pide sacar $12.000.',d:'CVU 0000003100011447615683'},
+     {i:I.stop,l:'No es su cuenta',k:'2. La cuenta no es del jugador',t:'El CUIT del titular no coincide con el del jugador. El retiro no sale: se frena acá, antes de mover un peso.',d:'titular CUIT 30717039501 ≠ jugador 27334455668'},
+     {i:I.salida,l:'No se despacha',k:'3. No se despacha',t:'Nunca llega a la orden de pago. Sin este control, la plata se iba a la cuenta de un tercero.',d:''},
+     {i:I.tablero,l:'Queda auditado',k:'4. Queda registrado',t:'El intento bloqueado queda en la auditoría con el motivo, para revisarlo con el jugador.',d:'motivo: titularidad_no_coincide'}],
+    fin:{tipo:'Retiro',quien:'Jugador #8123',sub:'Titularidad no coincide',monto:12000,pos:false,chip:'c-no',est:'Bloqueado',delta:0}}};
+
+  var rail=document.getElementById('rail'),prog=document.getElementById('prog'),pill=document.getElementById('pill'),
+      say=document.getElementById('say'),route=document.getElementById('route'),pp=document.getElementById('pp'),
+      rowsEl=document.getElementById('rows'),balEl=document.getElementById('bal'),
+      segBtns=[].slice.call(document.querySelectorAll('.seg button'));
+  var cur='dep',step=-1,playing=true,timer=null,saldo=48500,hh=13,mm=29;
+  var quieto=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function money(n){ return '$'+Math.abs(n).toLocaleString('es-AR'); }
+  function hora(){ mm=(mm+1)%60; if(mm===0) hh=(hh+1)%24;
+    return ('0'+hh).slice(-2)+':'+('0'+mm).slice(-2)+':'+('0'+((mm*7)%60)).slice(-2); }
+
+  function pintar(){
+    var f=F[cur];
+    [].forEach.call(rail.querySelectorAll('.nd'),function(n){n.remove();});
+    f.pasos.forEach(function(p){
+      var d=document.createElement('div'); d.className='nd';
+      d.innerHTML='<span class="ic">'+p.i+'</span><span class="lb">'+p.l+'</span>';
+      rail.appendChild(d);
+    });
+    pill.textContent=f.pill; pill.classList.toggle('bad',!!f.malo); route.textContent=f.ruta;
+  }
+  function render(){
+    var f=F[cur],nds=rail.querySelectorAll('.nd'),n=f.pasos.length;
+    [].forEach.call(nds,function(el,ix){
+      el.className='nd';
+      if(ix<step) el.classList.add('done');
+      if(ix===step) el.classList.add(f.malo===ix?'bad':'on');
+    });
+    var pc=step<0?0:(step/(n-1));
+    prog.style.width=(pc*75)+'%';
+    prog.classList.toggle('bad',!!f.malo&&step>=f.malo);
+    pill.style.left=(12.5+pc*75)+'%';
+    pill.style.opacity=step<0?0:1;
+    if(step>=0){ var p=f.pasos[step];
+      say.className='say'+(f.malo===step?' bad':'');
+      say.innerHTML='<span class="k">'+p.k+'</span> — '+p.t+(p.d?'<span class="det">'+p.d+'</span>':'');
+    } else { say.className='say'; say.innerHTML='<span class="k">Listo para arrancar.</span> Elegí un recorrido o dale a reproducir.'; }
+  }
+  function fila(){
+    var f=F[cur].fin,tr=document.createElement('tr'); tr.className='fresh';
+    tr.innerHTML='<td class="t">'+hora()+'</td><td>'+f.tipo+'</td>'+
+      '<td class="who2"><b>'+f.quien+'</b>'+f.sub+'</td>'+
+      '<td class="num '+(f.pos?'pos':'')+'">'+(f.pos?'+':'−')+money(f.monto)+'</td>'+
+      '<td><span class="chip '+f.chip+'">'+f.est+'</span></td>';
+    rowsEl.insertBefore(tr,rowsEl.firstChild);
+    while(rowsEl.children.length>5) rowsEl.removeChild(rowsEl.lastChild);
+    saldo+=f.delta; balEl.textContent=money(saldo);
+  }
+  function tick(){ if(++step>=F[cur].pasos.length){ fila(); step=-1; } render(); }
+  function loop(){ clearInterval(timer); if(playing&&!quieto) timer=setInterval(tick,2100); }
+  function elegir(f){ cur=f; step=-1;
+    segBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.f===f)); });
+    pintar(); render(); loop(); }
+
+  segBtns.forEach(function(b){ b.addEventListener('click',function(){ elegir(b.dataset.f); }); });
+  pp.addEventListener('click',function(){ playing=!playing; pp.textContent=playing?'Pausar':'Reproducir';
+    if(playing){ loop(); } else { clearInterval(timer); } });
+
+  [['Depósito','Jugador #7734','Depósito de jugador','+$500',true,'c-ok','Acreditado'],
+   ['Retiro','Jugador #5510','Pago · CVU ****8890','−$150',false,'c-wait','En curso'],
+   ['Depósito','Jugador #1290','Depósito de jugador','+$100',true,'c-ok','Acreditado']]
+  .forEach(function(r){
+    var tr=document.createElement('tr');
+    tr.innerHTML='<td class="t">'+hora()+'</td><td>'+r[0]+'</td>'+
+      '<td class="who2"><b>'+r[1]+'</b>'+r[2]+'</td>'+
+      '<td class="num '+(r[4]?'pos':'')+'">'+r[3]+'</td>'+
+      '<td><span class="chip '+r[5]+'">'+r[6]+'</span></td>';
+    rowsEl.appendChild(tr);
+  });
+
+  pintar(); render();
+  if(quieto){ pp.textContent='Reproducir'; playing=false; step=0; render(); } else { loop(); }
+})();
+</script>
+</body>
+</html>
