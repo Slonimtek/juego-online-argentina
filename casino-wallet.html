@@ -58,6 +58,16 @@
   a.back{ display:inline-block; margin:26px 0 0; color:var(--teal); font-size:.8rem; font-weight:700; text-decoration:none; }
   a.back:hover{ text-decoration:underline; }
 
+  .findlink{ display:flex; align-items:center; gap:13px; margin:0; padding:13px 16px; background:var(--surface);
+             border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); text-decoration:none; color:var(--ink); }
+  .findlink:hover{ border-color:var(--teal-br); }
+  .findlink:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  .fl-ic{ font-size:1.45rem; line-height:1; }
+  .fl-t{ display:flex; flex-direction:column; gap:1px; }
+  .fl-t .a{ font-size:.92rem; font-weight:800; }
+  .fl-t .b{ font-size:.78rem; color:var(--teal); font-weight:600; }
+  .fl-go{ margin-left:auto; color:var(--teal); font-weight:800; font-size:1.1rem; }
+
   .thesis{ margin:20px 0; padding:16px 18px; background:var(--surface); border:1px solid var(--line); border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); }
   .thesis .lead{ font-size:1.04rem; font-weight:600; text-wrap:balance; }
   .thesis .lead b{ color:var(--teal); }
@@ -320,6 +330,15 @@
         </ul>
       </div>
     </div>
+  </section>
+
+  <section>
+    <h2>Para el equipo técnico</h2>
+    <a class="findlink" href="integracion.html">
+      <span class="fl-ic" aria-hidden="true">⚙️</span>
+      <span class="fl-t"><span class="a">Integración técnica — casos de uso, secuencias y API</span><span class="b">Los 7 endpoints campo por campo, los dos diagramas de secuencia y la spec OpenAPI 3.1 descargable</span></span>
+      <span class="fl-go" aria-hidden="true">→</span>
+    </a>
   </section>
 
   <a class="back" href="index.html">← Volver al portal</a>

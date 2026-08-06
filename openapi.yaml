@@ -1,0 +1,646 @@
+openapi: 3.1.0
+info:
+  title: Casino Wallet de Finpro — API de integración
+  version: "1.2.0"
+  summary: Rieles bancarios argentinos (CVU/Coelsa) para la billetera del operador de juego.
+  description: |
+    Superficie de integración del middleware **Finpro** para la billetera del operador.
+
+    Reconstruida a partir de la documentación del proveedor:
+    **Guía de Integración v1.2** y **Guía Técnica — Verificación de Transferencias para
+    Chatbot v1.0** (última actualización 2026-03-16).
+
+    ## Lo que hay que saber antes de escribir código
+
+    - **Todas las operaciones son `POST`**, incluidas las de consulta. No hay `GET`.
+    - **La autenticación normal es por credenciales de cliente** (`X-API-Key` +
+      `X-API-Secret`) en cada llamada. El token de `/auth/token/client` **sólo lo consume
+      `/accounts/information`**, vía el header `x-access-token`.
+    - **`code` es un string, no un número**, y el valor de éxito **cambia según el endpoint**:
+      `"0200"` en auth, estado y resultado; `"2200"` en balance; `"0201"` en el alta de
+      transferencias; `"0100"` en la consulta de titularidad.
+    - **Aceptado no es pagado.** `/transfers/cvu` confirma la recepción del lote; el
+      resultado por transacción y el `coelsa_id` sólo aparecen en
+      `/processes/{processId}/result`.
+    - **El `API Secret` se muestra una sola vez.** Si se regenera, el anterior deja de
+      funcionar de inmediato.
+
+    ## Límites conocidos de esta versión
+
+    - `/transfers/verify/incoming` valida entrantes acreditadas: **no devuelve `reversed`
+      ni cubre reversas (`revct`)**, y no resuelve los casos ambiguos por su cuenta.
+    - El aviso de cierre (callback) trae contadores, **no detalle por transacción**, y no
+      incluye `coelsa_id`.
+    - No hay catálogo publicado de códigos de rechazo por transacción.
+    - La respuesta de `/accounts/information` **no está normalizada por el middleware**:
+      es el cuerpo de Coelsa tal cual.
+    - Sólo hay ambiente de desarrollo publicado.
+  contact:
+    name: Portal del proyecto
+    url: https://slonimtek.github.io/juego-online-argentina/casino-wallet.html
+
+servers:
+  - url: https://mw-dev.finpro.com.ar
+    description: Desarrollo (único ambiente publicado)
+
+security:
+  - ClientKey: []
+    ClientSecret: []
+
+tags:
+  - name: Autenticación
+    description: Obtención del token que consume la consulta de titularidad.
+  - name: Cuentas
+    description: Saldo operativo y titularidad de una cuenta destino.
+  - name: Transferencias
+    description: Alta de pagos salientes por CVU y verificación de entrantes.
+  - name: Procesos
+    description: Seguimiento del lote y resultado detallado por transacción.
+
+paths:
+  /api/banks/{bankId}/auth/token/client:
+    post:
+      tags: [Autenticación]
+      operationId: obtenerToken
+      summary: Obtener token con credenciales de cliente
+      description: |
+        Devuelve un token de una hora. **Sólo hace falta para
+        `/accounts/information`** — el resto de las operaciones autentica con
+        `X-API-Key` y `X-API-Secret` solamente.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Cuerpo vacío.
+              example: {}
+      responses:
+        '200':
+          description: Token emitido (`code = "0200"`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaToken' }
+        '401': { $ref: '#/components/responses/NoAutorizado' }
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+
+  /api/banks/{bankId}/accounts/balance:
+    post:
+      tags: [Cuentas]
+      operationId: consultarBalance
+      summary: Consultar el saldo operativo de la cuenta recaudadora
+      description: |
+        Saldo disponible al momento de la consulta. Es el saldo de la cuenta bancaria,
+        **no** la suma de los saldos de los jugadores: cuadrar una contra la otra es
+        trabajo de la billetera.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+        - $ref: '#/components/parameters/PlatformId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PedidoBalance' }
+      responses:
+        '200':
+          description: Saldo devuelto (`code = "2200"`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaBalance' }
+        '401': { $ref: '#/components/responses/NoAutorizado' }
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+
+  /api/banks/{bankId}/accounts/information:
+    post:
+      tags: [Cuentas]
+      operationId: consultarTitular
+      summary: Consultar el titular de un CVU o alias
+      description: |
+        **El control antifraude central de la billetera.** Devuelve nombre y CUIT/CUIL del
+        titular real de la cuenta de destino, antes de despachar un retiro.
+
+        Requiere el header adicional `x-access-token` con el `token` de
+        `/auth/token/client` — es el único endpoint que lo pide.
+
+        ⚠️ La respuesta **no está normalizada por el middleware**: es el cuerpo de Coelsa
+        tal cual, así que puede cambiar sin aviso.
+
+        ⚠️ **No compara contra la identidad del jugador.** La regla de «sólo pago a cuenta
+        propia» la aplica la billetera con el `cuit` que este endpoint devuelve.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+        - $ref: '#/components/parameters/PlatformId'
+        - name: x-access-token
+          in: header
+          required: true
+          description: Valor del campo `token` devuelto por `/auth/token/client`.
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PedidoTitular' }
+      responses:
+        '200':
+          description: |
+            Titularidad resuelta (`code = "0100"`, `description = "ALIAS ENCONTRADO"`).
+            HTTP 200 significa que el banco respondió OK a esa operación.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaTitular' }
+        '401': { $ref: '#/components/responses/NoAutorizado' }
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+
+  /api/banks/{bankId}/transfers/cvu:
+    post:
+      tags: [Transferencias]
+      operationId: enviarTransferencias
+      summary: Despachar un lote de transferencias por CVU
+      description: |
+        Da de alta un lote de pagos salientes. La respuesta confirma **la recepción del
+        lote**, no el pago: guardá el `process_id` para seguirlo.
+
+        En esta instancia **todavía no se obtiene el `coelsa_id`**; se consulta después
+        con `/processes/{processId}/result`.
+
+        Validaciones que impone el proveedor:
+
+        - `process_id` debe ser **único**.
+        - `transaction_count` debe coincidir con la cantidad de elementos de `data`.
+        - `transaction_id` debe mantenerse en **12 caracteres o menos**.
+        - `concept` puede usar el valor `VAR` para transferencias generales.
+
+        ⚠️ La documentación **no define qué ocurre al reenviar un `process_id` ya usado**
+        (¿rechazo, ignorado o segundo pago?). Hasta confirmarlo con el proveedor, tratá el
+        reintento como riesgo de doble pago y resolvé la idempotencia del lado de la
+        billetera.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+        - $ref: '#/components/parameters/PlatformId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PedidoTransferencias' }
+      responses:
+        '200':
+          description: Lote aceptado para procesamiento (`code = "0201"`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaTransferencias' }
+        '400': { $ref: '#/components/responses/PedidoInvalido' }
+        '401': { $ref: '#/components/responses/NoAutorizado' }
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+      callbacks:
+        cierreDeProceso:
+          '{$request.body#/callback_url}':
+            post:
+              operationId: avisoCierreProceso
+              summary: Aviso de cierre del lote
+              description: |
+                Si se informó `callback_url`, la plataforma le pega con el estado final del
+                proceso.
+
+                Requisitos de la URL: pública y accesible desde internet, acepta `POST`,
+                y responde correctamente para confirmar recepción.
+
+                ⚠️ **Trae contadores, no detalle**: no dice cuál transacción falló ni por
+                qué, y **no incluye `coelsa_id`**. Usalo como disparador para pedir
+                `/processes/{processId}/result`, nunca como orden de acreditación.
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema: { $ref: '#/components/schemas/AvisoCierre' }
+              responses:
+                '200':
+                  description: Recepción confirmada por el consumidor.
+
+  /api/banks/{bankId}/processes/status:
+    post:
+      tags: [Procesos]
+      operationId: consultarEstadoProceso
+      summary: Consultar el estado general de uno o más procesos
+      description: |
+        Devuelve contadores y estado del lote. ⚠️ **No incluye `coelsa_id`** — para eso
+        está `/processes/{processId}/result`.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+        - $ref: '#/components/parameters/PlatformId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PedidoEstado' }
+      responses:
+        '200':
+          description: Estado devuelto (`code = "0200"`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaEstado' }
+        '401': { $ref: '#/components/responses/NoAutorizado' }
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+
+  /api/banks/{bankId}/processes/{processId}/result:
+    post:
+      tags: [Procesos]
+      operationId: consultarResultadoProceso
+      summary: Obtener el resultado detallado por transacción
+      description: |
+        **Es la única fuente del `coelsa_id`**, el identificador de la red de pagos, y por
+        lo tanto la única prueba de que la plata salió. Nunca marques un retiro como
+        pagado contra el aviso de cierre: confirmalo acá.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+        - name: processId
+          in: path
+          required: true
+          description: El `process_id` devuelto al dar de alta el lote.
+          schema: { type: string }
+          example: 660e8400-e29b-41d4-a716-446655440001
+        - $ref: '#/components/parameters/PlatformId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Cuerpo vacío.
+              example: {}
+      responses:
+        '200':
+          description: Detalle devuelto (`code = "0200"`, `status = "finished"`).
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaResultado' }
+        '401': { $ref: '#/components/responses/NoAutorizado' }
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+
+  /api/banks/{bankId}/transfers/verify/incoming:
+    post:
+      tags: [Transferencias]
+      operationId: verificarEntrante
+      summary: Verificar si una transferencia entrante fue recibida
+      description: |
+        Consulta si un depósito del jugador ya entró. **Es consulta, no notificación**: no
+        existe aviso automático de entrantes, así que la latencia de acreditación la fija
+        cada cuánto preguntes.
+
+        ### Reglas mínimas del request
+
+        Tiene que incluir **un identificador fuerte** (`coelsa_id` o `authorization_code`)
+        **o bien** `amount` acompañado de ventana temporal y/o CVU/cuenta.
+
+        ### Prioridad de búsqueda sugerida
+
+        1. `coelsa_id`
+        2. `authorization_code`
+        3. `amount` + `to_cvu` + tiempo
+        4. `amount` + `to_account` + tiempo
+        5. `document` + monto + tiempo
+
+        ### Alcance
+
+        El middleware restringe la búsqueda a los CVUs y cuentas activas asociados al
+        cliente autenticado: **no devuelve coincidencias fuera de ese alcance ni expone
+        movimientos de otros clientes**.
+
+        ⚠️ **Limitaciones de esta versión:** valida entrantes acreditadas, **no devuelve
+        `reversed`, no cubre reversas (`revct`)** y no resuelve automáticamente los casos
+        ambiguos. Un depósito revertido después de acreditado no genera ninguna señal.
+      parameters:
+        - $ref: '#/components/parameters/BankId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/PedidoVerificacion' }
+            examples:
+              porCodigoAutorizacion:
+                summary: Búsqueda exacta por authorization_code
+                value: { authorization_code: "491983", amount: 10, to_cvu: "0000151500034526227120" }
+              porCoelsaId:
+                summary: Búsqueda exacta por coelsa_id
+                value: { coelsa_id: "ABC123XYZ987" }
+              porMontoYVentana:
+                summary: Búsqueda por amount + occurred_at + ventana
+                value: { amount: 10, occurred_at: "2026-03-09T15:39:39-03:00", window_minutes: 30, to_cvu: "0000151500034526227120" }
+              porRangoTemporal:
+                summary: Búsqueda por rango temporal
+                value: { amount: 10, occurred_from: "2026-03-05T00:00:00.000Z", occurred_to: "2026-03-10T00:00:00.000Z", to_cvu: "0000151500034526227120" }
+      responses:
+        '200':
+          description: Resultado de la búsqueda.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/RespuestaVerificacion' }
+        '400':
+          description: |
+            Request insuficiente, fecha inválida, `amount` inválido o `window_minutes`
+            fuera de rango.
+        '401':
+          description: '`X-API-Key` o `X-API-Secret` inválidos, o cliente inactivo.'
+        '403':
+          description: El cliente no tiene el permiso `movements`.
+        '500': { $ref: '#/components/responses/ErrorInterno' }
+
+components:
+  securitySchemes:
+    ClientKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Credencial de cliente. Va en **todas** las operaciones.
+    ClientSecret:
+      type: apiKey
+      in: header
+      name: X-API-Secret
+      description: |
+        Secreto de cliente. Va en **todas** las operaciones.
+        Se muestra una sola vez al crearlo o regenerarlo; si se regenera, el anterior
+        deja de funcionar de inmediato.
+
+  parameters:
+    BankId:
+      name: bankId
+      in: path
+      required: true
+      description: Identificador del banco. En la documentación vigente, `creedence`.
+      schema: { type: string, default: creedence }
+      example: creedence
+    PlatformId:
+      name: platform-id
+      in: header
+      required: false
+      description: Identificador de plataforma. Opcional.
+      schema: { type: string }
+      example: cliente-prueba
+
+  responses:
+    NoAutorizado:
+      description: Credenciales inválidas o cliente inactivo.
+    PedidoInvalido:
+      description: El cuerpo no cumple las validaciones.
+    ErrorInterno:
+      description: Error interno del middleware.
+
+  schemas:
+    RespuestaToken:
+      type: object
+      properties:
+        code: { type: string, const: "0200" }
+        description: { type: string, example: ok }
+        token: { type: string, example: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..." }
+        token_type: { type: string, example: new }
+        expires_in: { type: integer, example: 3600, description: Segundos de vigencia. }
+        expires_in_millis: { type: integer, example: 3600000 }
+        utcnow: { type: string, example: "Fri, 06 Mar 2026 20:05:39 GMT" }
+
+    PedidoBalance:
+      type: object
+      required: [account]
+      properties:
+        account: { type: string, example: "564734514" }
+        trace: { type: string, example: "174129300001" }
+        retrieval: { type: string, example: "BAL20260306A" }
+
+    RespuestaBalance:
+      type: object
+      properties:
+        code: { type: string, const: "2200" }
+        description: { type: string, example: ok }
+        request_id: { type: string, example: "20260306181326636152" }
+        data:
+          type: object
+          properties:
+            authorization_code: { type: string, example: "884865" }
+            available_cash_advances: { type: number, example: 0 }
+            available_for_purchases: { type: number, example: 9967 }
+            available_installments: { type: number, example: 0 }
+            available_loans: { type: number, example: 0 }
+            balance: { type: number, example: 0 }
+            dollar_balance: { type: number, example: 0 }
+            minimum_payment: { type: number, example: 0 }
+            reserve_balance: { type: number, example: 0 }
+
+    PedidoTitular:
+      type: object
+      description: Debe incluir **al menos uno** de `cvu` o `alias`, como string no vacío.
+      minProperties: 1
+      properties:
+        cvu: { type: string, example: "0000003100011447615683" }
+        alias: { type: string, example: cuenta.mp }
+      anyOf:
+        - required: [cvu]
+        - required: [alias]
+
+    RespuestaTitular:
+      type: object
+      description: Cuerpo según Coelsa, **no normalizado por el middleware**.
+      properties:
+        code: { type: string, const: "0100", description: Código de resultado Coelsa. }
+        description: { type: string, example: ALIAS ENCONTRADO }
+        nombre: { type: string, example: Nombre Completo Del Titular, description: Titular de la cuenta. }
+        cuit: { type: string, example: "20204932388", description: CUIT/CUIL del titular. }
+        cvu: { type: string, example: "0000003100011447615683" }
+        alias: { type: string, example: cuenta.mp }
+        tipo_persona: { type: string, enum: [F, J], example: F, description: 'Física o jurídica.' }
+        request_id: { type: string, example: "20260506161618655401", description: Identificador de traza. }
+
+    TransferenciaItem:
+      type: object
+      required: [transaction_id, from_cvu, to_cvu, amount]
+      properties:
+        transaction_id:
+          type: string
+          maxLength: 12
+          example: TX000000002
+          description: Identificador propio de la operación. **12 caracteres o menos.**
+        from_cvu: { type: string, example: "0000151500034514227129" }
+        to_cvu: { type: string, example: "0000151500034526227120" }
+        amount: { type: number, example: 10.00 }
+        concept: { type: string, example: VAR, description: '`VAR` para transferencias generales.' }
+        description: { type: string, example: Prueba cliente autenticado }
+
+    PedidoTransferencias:
+      type: object
+      required: [process_id, transaction_count, data]
+      properties:
+        callback_url:
+          type: string
+          format: uri
+          example: https://su-endpoint-publico.com/webhook
+          description: URL pública que acepta `POST`. Si se informa, recibe el aviso de cierre.
+        process_id:
+          type: string
+          example: 660e8400-e29b-41d4-a716-446655440001
+          description: Debe ser **único**. Es la llave para consultar estado y resultado.
+        transaction_count:
+          type: integer
+          example: 1
+          description: Debe coincidir con la cantidad de elementos de `data`.
+        initial_datetime: { type: string, example: "2026-03-06T17:15:00-03:00" }
+        data:
+          type: array
+          items: { $ref: '#/components/schemas/TransferenciaItem' }
+
+    RespuestaTransferencias:
+      type: object
+      properties:
+        code: { type: string, const: "0201", description: Lote aceptado para procesamiento. }
+        description: { type: string, example: ok }
+        process_id: { type: string, example: 660e8400-e29b-41d4-a716-446655440001 }
+        request_id: { type: string, example: "20260306171250699455" }
+        transaction_count: { type: integer, example: 1 }
+
+    PedidoEstado:
+      type: object
+      required: [process_ids]
+      properties:
+        process_ids:
+          type: array
+          items: { type: string }
+          example: ["660e8400-e29b-41d4-a716-446655440001"]
+
+    RespuestaEstado:
+      type: object
+      properties:
+        code: { type: string, const: "0200" }
+        description: { type: string, example: ok }
+        request_id: { type: string, example: "20260323102944499302" }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              process_id: { type: string, example: 660e8400-e29b-41d4-a716-446655440001 }
+              status: { type: string, example: finished }
+              transaction_count: { type: integer, example: 1 }
+              transaction_success_count: { type: integer, example: 1 }
+              transaction_fail_count: { type: integer, example: 0 }
+              transaction_processed_count: { type: integer, example: 1 }
+              initial_datetime: { type: string, example: "2026-03-23T10:29:42.000Z" }
+              process_initial_datetime: { type: string, example: "2026-03-23T13:29:44.819Z" }
+              process_ending_datetime: { type: string, example: "2026-03-23T13:29:45.034Z" }
+
+    RespuestaResultado:
+      type: object
+      properties:
+        code: { type: string, const: "0200" }
+        status: { type: string, example: finished }
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              coelsa_id:
+                type: string
+                example: R7ZG0QNDWKMQLRPG9EXYPO
+                description: Identificador de la red de pagos. **La prueba del pago.**
+              response_code: { type: string, example: "0200" }
+              response_description: { type: string, example: ok }
+              transfer_type: { type: string, example: S }
+              account: { type: string, example: "564733224" }
+              datetime: { type: string, example: "2026-03-20 12:20:24" }
+              amount: { type: string, example: "100.00" }
+              cbu_from: { type: string, example: "0000151500033224203142" }
+              cbu_to: { type: string, example: "0140000701100088139728" }
+              origin_tax_id: { type: string, example: "30717039501" }
+              destination_tax_id: { type: string, example: "20987654321" }
+              notification_type: { type: string, example: CT }
+              cardholder_from: { type: string, example: EMPRESA EJEMPLO SRL }
+              cardholder_to: { type: string, example: MARIA GONZALEZ }
+              concept: { type: string, example: VAR }
+              authorization_code: { type: string, example: "358164" }
+              transaction_id: { type: string, example: TX000000002 }
+              client_id: { type: [string, "null"], example: null }
+              exchange_status: { type: [string, "null"], example: null }
+
+    AvisoCierre:
+      type: object
+      description: Cierre del proceso y sus contadores. **No incluye `coelsa_id`.**
+      properties:
+        process_id: { type: string, example: 770e8400-e29b-41d4-a716-446655440002 }
+        transaction_count: { type: integer, example: 1 }
+        initial_datetime: { type: string, example: "2026-03-06 18:30:00.000000" }
+        process_initial_date: { type: string, example: "2026-03-09 15:20:41.752000" }
+        process_ending_time: { type: string, example: "2026-03-09 15:20:41.968000" }
+        transaction_success_count: { type: integer, example: 1 }
+        transaction_fail_count: { type: integer, example: 0 }
+        transaction_processed_count: { type: integer, example: 1 }
+        status: { type: string, example: finished }
+
+    PedidoVerificacion:
+      type: object
+      description: |
+        Necesita un identificador fuerte (`coelsa_id` o `authorization_code`), **o bien**
+        `amount` con ventana temporal y/o CVU/cuenta.
+      minProperties: 1
+      properties:
+        coelsa_id: { type: string, example: ABC123XYZ987 }
+        authorization_code: { type: string, example: "491983" }
+        amount: { type: number, example: 10 }
+        occurred_at: { type: string, example: "2026-03-09T15:39:39-03:00" }
+        window_minutes: { type: integer, example: 30, description: Ventana alrededor de `occurred_at`. }
+        occurred_from: { type: string, example: "2026-03-05T00:00:00.000Z" }
+        occurred_to: { type: string, example: "2026-03-10T00:00:00.000Z" }
+        from_cvu: { type: string, example: "0000151500034514227129" }
+        to_cvu: { type: string, example: "0000151500034526227120" }
+        from_account: { type: string, example: "564734514" }
+        to_account: { type: string, example: "564734526" }
+        origin_tax_id: { type: string }
+        destination_tax_id: { type: string }
+        document: { type: string }
+
+    RespuestaVerificacion:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [confirmed, not_found_yet, ambiguous]
+          description: |
+            - `confirmed`: existe una notificación compatible; la transferencia puede
+              considerarse encontrada.
+            - `not_found_yet`: no se encontró una notificación compatible **al momento de
+              la consulta**. No implica rechazo definitivo: reintentá.
+            - `ambiguous`: hay más de una coincidencia posible; hace falta un dato
+              adicional para confirmar con seguridad.
+        matched_by:
+          type: [string, "null"]
+          enum: [coelsa_id, authorization_code, amount_date_cvu, amount_date_account, document, null]
+        confidence:
+          type: [string, "null"]
+          enum: [exact, high, medium, null]
+        notification:
+          type: [object, "null"]
+          properties:
+            id: { type: integer, example: 2249212 }
+            bank_id: { type: string, example: creedence }
+            webhook_type: { type: string, example: cbu_transfers }
+            received_at: { type: string, example: "2026-03-09T18:39:39.488Z" }
+            amount: { type: string, example: "10.00" }
+            authorization_code: { type: string, example: "491983" }
+            from_cvu: { type: string, example: "0000151500034514227129" }
+            to_cvu: { type: string, example: "0000151500034526227120" }
+            from_account: { type: string, example: "564734514" }
+            to_account: { type: string, example: "564734526" }
+        matches:
+          type: array
+          description: Candidatos encontrados. Con más de uno, `status` es `ambiguous`.
+          items:
+            type: object
+            properties:
+              id: { type: integer, example: 2249212 }
+              authorization_code: { type: string, example: "491983" }
+              amount: { type: string, example: "10.00" }
+        searched_scope:
+          type: object
+          properties:
+            bank_id: { type: string, example: creedence }
+            client_id: { type: string }
+            attempted_strategies:
+              type: array
+              items: { type: string }
+              example: [coelsa_id, amount_date_cvu]

@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Integración técnica — Casino Wallet de Finpro</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iNyIgZmlsbD0iIzBCMkE0QSIvPjxwYXRoIGQ9Ik0yMi41IDkuMmMtMS42LTEuNi00LTIuNS02LjYtMi41LTQuMSAwLTcgMi4yLTcgNS4yIDAgMyAyLjQgNC4zIDYuNCA1LjEgMy4xLjYgNC4yIDEuMSA0LjIgMi4zIDAgMS4yLTEuNCAyLTMuNiAyLTIuMiAwLTQtLjktNS4zLTIuMyIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIuNiIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9zdmc+">
+<style>
+  :root{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --navy:#0B2A4A; --navy2:#123a63; --teal:#0E8F89; --teal-br:#0FB5AE; --teal-hi:#8ff0ea; --teal-ink:#04201e;
+    --curso:#B45309; --curso-bg:#FBECD9;
+    --ok:#127A4A; --ok-bg:#E4F3EA; --no:#B3261E; --nobg:#FBEAE8;
+    --code-bg:#0E2033; --code-ink:#D7E3EF; --code-key:#8ff0ea; --code-str:#9DD8A4; --code-num:#F0B67F;
+    --shadow:0 1px 2px rgba(11,42,74,.06),0 8px 24px rgba(11,42,74,.06);
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){ :root{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --curso:#FBBF24; --curso-bg:#392808;
+    --ok:#34D399; --ok-bg:#0F3222; --no:#F87171; --nobg:#3A1615;
+    --code-bg:#08131F; --code-ink:#CFE0EE;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0A1826; --surface:#102234; --surface2:#15293C; --ink:#E6EEF5; --muted:#93A4B3; --line:#22384C;
+    --teal:#3AD6CE; --teal-br:#3AD6CE; --curso:#FBBF24; --curso-bg:#392808;
+    --ok:#34D399; --ok-bg:#0F3222; --no:#F87171; --nobg:#3A1615;
+    --code-bg:#08131F; --code-ink:#CFE0EE;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F7FB; --surface:#FFFFFF; --surface2:#EDF3F8; --ink:#152532; --muted:#5B6B7B; --line:#D9E1E9;
+    --teal:#0E8F89; --teal-br:#0FB5AE; --curso:#B45309; --curso-bg:#FBECD9;
+    --ok:#127A4A; --ok-bg:#E4F3EA; --no:#B3261E; --nobg:#FBEAE8;
+    --code-bg:#0E2033; --code-ink:#D7E3EF;
+  }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.55; -webkit-font-smoothing:antialiased; }
+  .wrap{ max-width:1000px; margin:0 auto; padding:26px 20px 60px; }
+  h2{ font-size:1.02rem; margin:0 0 6px; }
+  h3{ font-size:.92rem; margin:0 0 8px; }
+  p{ margin:0 0 12px; }
+  section{ margin-top:34px; }
+  .eyebrow{ font-size:.66rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--teal); }
+  .note{ font-size:.84rem; color:var(--muted); }
+  code{ font-family:var(--mono); font-size:.86em; background:var(--surface2); padding:.1em .35em; border-radius:4px; }
+
+  .top{ display:flex; align-items:center; gap:14px; padding-bottom:16px; border-bottom:1px solid var(--line); }
+  .badge{ width:44px; height:44px; border-radius:11px; flex:none; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--navy),var(--navy2) 45%,#0FB5AE 130%); box-shadow:var(--shadow); }
+  .top .ttl{ flex:1; min-width:0; }
+  .top .ttl .t1{ font-size:1.18rem; font-weight:800; letter-spacing:-.01em; }
+  .top .ttl .t2{ font-size:.78rem; color:var(--muted); }
+  .stamp{ font-size:.7rem; color:var(--muted); display:flex; align-items:center; gap:6px; white-space:nowrap; }
+  .dot{ width:7px; height:7px; border-radius:50%; background:var(--curso); box-shadow:0 0 0 3px var(--curso-bg); }
+  .tgl{ border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:8px; padding:6px 9px; font-size:.72rem; cursor:pointer; }
+  .tgl:hover{ color:var(--ink); border-color:var(--muted); }
+  .tgl:focus-visible,a:focus-visible,summary:focus-visible{ outline:2px solid var(--teal-br); outline-offset:2px; }
+  a{ color:var(--teal); }
+  a.back{ display:inline-block; margin:30px 0 0; font-size:.8rem; font-weight:700; text-decoration:none; }
+  a.back:hover{ text-decoration:underline; }
+
+  .thesis{ margin:20px 0; padding:16px 18px; background:var(--surface); border:1px solid var(--line);
+           border-left:4px solid var(--teal-br); border-radius:12px; box-shadow:var(--shadow); }
+  .thesis .lead{ font-size:1rem; font-weight:600; text-wrap:balance; }
+  .thesis .lead b{ color:var(--teal); }
+  .meta{ display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+  .meta span{ font-family:var(--mono); font-size:.7rem; background:var(--surface2); border:1px solid var(--line);
+              border-radius:99px; padding:4px 10px; color:var(--muted); }
+
+  .dl{ display:flex; align-items:center; gap:13px; margin:14px 0 0; padding:13px 16px; background:var(--surface);
+       border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); text-decoration:none; color:var(--ink); }
+  .dl:hover{ border-color:var(--teal-br); }
+  .dl .a{ font-size:.92rem; font-weight:800; display:block; }
+  .dl .b{ font-size:.78rem; color:var(--teal); font-weight:600; }
+  .dl .go{ margin-left:auto; color:var(--teal); font-weight:800; font-size:1.1rem; }
+
+  /* reglas */
+  .rules{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media (max-width:760px){ .rules{ grid-template-columns:1fr; } }
+  .rule{ background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow); }
+  .rule .n{ font-family:var(--mono); font-size:.7rem; color:var(--teal); font-weight:700; }
+  .rule .h{ font-size:.9rem; font-weight:800; margin:2px 0 5px; }
+  .rule .d{ font-size:.83rem; color:var(--muted); }
+  .rule .d b{ color:var(--ink); }
+
+  /* casos de uso */
+  .uc{ background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); margin-bottom:12px; overflow:hidden; }
+  .uc summary{ padding:13px 16px; cursor:pointer; font-weight:700; font-size:.92rem; display:flex; align-items:center; gap:10px; list-style:none; }
+  .uc summary::-webkit-details-marker{ display:none; }
+  .uc summary::before{ content:"▸"; color:var(--teal); font-size:.8rem; transition:transform .15s; }
+  .uc[open] summary::before{ transform:rotate(90deg); }
+  .uc summary .tag{ margin-left:auto; font-family:var(--mono); font-size:.66rem; color:var(--muted); font-weight:400; }
+  .uc .body{ padding:0 16px 16px; }
+  .uc ol{ margin:0; padding-left:20px; font-size:.86rem; color:var(--muted); }
+  .uc ol li{ margin-bottom:7px; }
+  .uc ol li b{ color:var(--ink); }
+
+  /* secuencia */
+  .seqwrap{ background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow);
+            padding:16px 16px 10px; margin-bottom:16px; overflow-x:auto; }
+  .seq{ min-width:640px; position:relative; }
+  .actors{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:10px; }
+  .actors span{ text-align:center; font-size:.75rem; font-weight:800; background:var(--surface2);
+                border:1px solid var(--line); border-radius:8px; padding:6px 4px; margin:0 6px; }
+  .lanes{ position:absolute; top:34px; bottom:0; left:0; right:0; display:grid;
+          grid-template-columns:repeat(8,1fr); pointer-events:none; }
+  .lanes i{ border-right:1px dashed var(--line); }
+  .msgs{ position:relative; list-style:none; margin:0; padding:0; }
+  .msgs li{ display:grid; grid-template-columns:repeat(8,1fr); align-items:end; min-height:44px; }
+  .arw{ position:relative; border-top:1.5px solid var(--teal); margin-bottom:14px; }
+  .arw::after{ content:""; position:absolute; right:-1px; top:-4.5px;
+               border-left:7px solid var(--teal); border-top:4px solid transparent; border-bottom:4px solid transparent; }
+  .arw.back{ border-top-style:dashed; border-top-color:var(--muted); }
+  .arw.back::after{ right:auto; left:-1px; border-left:0; border-right:7px solid var(--muted);
+                    border-top:4px solid transparent; border-bottom:4px solid transparent; }
+  .arw.gate{ border-top-color:var(--no); }
+  .arw.gate::after{ border-left-color:var(--no); }
+  .arw .lb{ position:absolute; bottom:4px; left:0; right:0; text-align:center; font-size:.72rem;
+            color:var(--ink); font-family:var(--mono); white-space:nowrap; overflow:visible; }
+  .arw.back .lb{ color:var(--muted); }
+  .arw.gate .lb{ color:var(--no); font-weight:700; }
+  .selfm{ align-self:end; margin:0 4px 14px; border:1px solid var(--line); background:var(--surface2);
+          border-radius:8px; padding:4px 8px; font-size:.71rem; font-family:var(--mono); text-align:center; }
+  .selfm.hot{ border-color:var(--no); background:var(--nobg); color:var(--no); font-weight:700; }
+  .selfm.good{ border-color:var(--teal-br); background:var(--ok-bg); color:var(--ok); font-weight:700; }
+  .seqcap{ font-size:.76rem; color:var(--muted); margin:6px 0 0; }
+
+  /* referencia */
+  .epw{ background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); margin-bottom:10px; overflow:hidden; }
+  .epw summary{ padding:12px 15px; cursor:pointer; display:flex; align-items:center; gap:10px; flex-wrap:wrap; list-style:none; }
+  .epw summary::-webkit-details-marker{ display:none; }
+  .verb{ font-family:var(--mono); font-size:.66rem; font-weight:800; background:var(--teal-br); color:var(--teal-ink);
+         border-radius:5px; padding:3px 7px; }
+  .path{ font-family:var(--mono); font-size:.79rem; word-break:break-all; }
+  .codebadge{ margin-left:auto; font-family:var(--mono); font-size:.68rem; color:var(--ok); background:var(--ok-bg);
+              border-radius:99px; padding:3px 9px; font-weight:700; }
+  .epw .body{ padding:0 15px 14px; font-size:.85rem; color:var(--muted); }
+  .epw .body b{ color:var(--ink); }
+  pre{ background:var(--code-bg); color:var(--code-ink); border-radius:9px; padding:12px 14px; overflow-x:auto;
+       font-family:var(--mono); font-size:.75rem; line-height:1.55; margin:10px 0; }
+  pre .k{ color:var(--code-key); } pre .s{ color:var(--code-str); } pre .n{ color:var(--code-num); } pre .c{ color:#7C93A8; }
+
+  .warn{ border-left:3px solid var(--no); background:var(--nobg); border-radius:0 8px 8px 0;
+         padding:9px 12px; font-size:.82rem; margin:10px 0; }
+  .warn b{ color:var(--ink); }
+
+  table{ width:100%; border-collapse:collapse; font-size:.83rem; }
+  .tw{ overflow-x:auto; background:var(--surface); border:1px solid var(--line); border-radius:12px; box-shadow:var(--shadow); }
+  th{ text-align:left; font-size:.64rem; letter-spacing:.09em; text-transform:uppercase; color:var(--muted);
+      padding:9px 14px; border-bottom:1px solid var(--line); font-weight:800; white-space:nowrap; }
+  td{ padding:9px 14px; border-bottom:1px solid var(--line); color:var(--muted); }
+  tr:last-child td{ border-bottom:0; }
+  td:first-child{ font-family:var(--mono); font-size:.76rem; color:var(--ink); white-space:nowrap; }
+
+  footer{ margin-top:34px; padding-top:16px; border-top:1px solid var(--line); display:flex; align-items:center;
+          gap:12px; justify-content:space-between; flex-wrap:wrap; }
+  footer .d{ font-size:.72rem; color:var(--muted); max-width:72%; }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="badge" aria-label="logo">
+      <svg width="27" height="27" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg>
+    </div>
+    <div class="ttl">
+      <div class="t1">Integración técnica</div>
+      <div class="t2">Casino Wallet de Finpro — casos de uso, secuencias y referencia de la API</div>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+      <button class="tgl" id="tgl" type="button" aria-label="Cambiar tema">◐ Tema</button>
+      <div class="stamp"><span class="dot"></span> Actualizado 6 ago 2026</div>
+    </div>
+  </header>
+
+  <div class="thesis">
+    <div class="eyebrow">Para quien va a escribir el código</div>
+    <div class="lead">Ocho operaciones — <b>siete endpoints y un callback</b> — alcanzan para acreditar depósitos, pagar retiros con verificación de titularidad y conciliar contra la red. Esta página tiene los casos de uso, las secuencias completas y la referencia campo por campo.</div>
+    <div class="meta">
+      <span>Base: https://mw-dev.finpro.com.ar</span>
+      <span>bankId: creedence</span>
+      <span>Guía v1.2 + Verificación v1.0</span>
+      <span>Todas las operaciones son POST</span>
+    </div>
+  </div>
+
+  <a class="dl" href="swagger.html">
+    <span aria-hidden="true" style="font-size:1.45rem;">🧭</span>
+    <span><span class="a">Explorador OpenAPI (Swagger)</span><span class="b">Los 7 endpoints navegables, con esquemas y ejemplos</span></span>
+    <span class="go" aria-hidden="true">→</span>
+  </a>
+  <a class="dl" href="openapi.yaml" download>
+    <span aria-hidden="true" style="font-size:1.45rem;">📥</span>
+    <span><span class="a">openapi.yaml</span><span class="b">Spec OpenAPI 3.1 válida — generá el cliente con tu herramienta preferida</span></span>
+    <span class="go" aria-hidden="true">↓</span>
+  </a>
+
+  <section>
+    <h2>Cinco reglas que evitan los errores caros</h2>
+    <p class="note">Son las que no se deducen leyendo la lista de endpoints.</p>
+    <div class="rules">
+      <div class="rule">
+        <div class="n">01</div><div class="h">La autenticación es asimétrica</div>
+        <div class="d">Todas las operaciones van con <code>X-API-Key</code> y <code>X-API-Secret</code>. El token de <code>/auth/token/client</code> lo consume <b>un solo endpoint</b>: la consulta de titularidad, vía <code>x-access-token</code>. Si armás un cliente que pide token para todo, estás haciendo trabajo de más.</div>
+      </div>
+      <div class="rule">
+        <div class="n">02</div><div class="h"><code>code</code> es string y cambia por endpoint</div>
+        <div class="d">El éxito es <code>"0200"</code> en auth, estado y resultado; <code>"2200"</code> en balance; <code>"0201"</code> en el alta de transferencias; <code>"0100"</code> en titularidad. <b>No compares contra un número</b> ni asumas un único valor de éxito.</div>
+      </div>
+      <div class="rule">
+        <div class="n">03</div><div class="h">Aceptado no es pagado</div>
+        <div class="d"><code>/transfers/cvu</code> confirma que el <b>lote</b> se recibió. Marcar el retiro como pagado ahí es el error más caro posible: todavía no salió un peso.</div>
+      </div>
+      <div class="rule">
+        <div class="n">04</div><div class="h">El <code>coelsa_id</code> vive en un solo lugar</div>
+        <div class="d">Ni el alta, ni el estado del lote, ni el aviso de cierre lo traen. Sólo <code>/processes/{processId}/result</code>. Es el identificador de la red y <b>la única prueba del pago</b>.</div>
+      </div>
+      <div class="rule">
+        <div class="n">05</div><div class="h">El <code>API Secret</code> se muestra una vez</div>
+        <div class="d">Guardalo al crearlo. Si se regenera, <b>el anterior deja de funcionar de inmediato</b> y toda integración que lo use se cae sin aviso.</div>
+      </div>
+      <div class="rule">
+        <div class="n">06</div><div class="h">La idempotencia es tuya</div>
+        <div class="d">La documentación exige <code>process_id</code> único pero <b>no define qué pasa si lo reenviás</b>: ¿rechazo, ignorado o segundo pago? Hasta que el proveedor lo confirme, tratá el reintento como riesgo de doble pago y resolvelo del lado de la billetera.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Casos de uso</h2>
+    <p class="note">Qué llamadas hacen falta, en qué orden, y qué guardar de cada una.</p>
+
+    <details class="uc" open>
+      <summary>Acreditar el depósito de un jugador <span class="tag">verify/incoming</span></summary>
+      <div class="body">
+        <ol>
+          <li>El jugador transfiere al CVU de la casa desde su banco — <b>fuera de la API</b> — e informa monto y, si lo tiene, el código de autorización de su comprobante.</li>
+          <li><b>Consultá</b> <code>/transfers/verify/incoming</code>. Prioridad: <code>coelsa_id</code> → <code>authorization_code</code> → <code>amount</code>+<code>to_cvu</code>+ventana.</li>
+          <li>Ramificá por <code>status</code>: <b>confirmed</b> acreditás; <b>not_found_yet</b> reintentás (no es rechazo); <b>ambiguous</b> pedís un dato más al jugador.</li>
+          <li>Al acreditar, <b>guardá <code>notification.id</code></b> contra el movimiento del ledger. Es lo que impide acreditar dos veces el mismo depósito.</li>
+        </ol>
+        <div class="warn"><b>No hay notificación de entrantes.</b> Esto es polling: la latencia de acreditación la fija tu frecuencia de consulta, no la red. Y una reversa posterior no genera ninguna señal.</div>
+      </div>
+    </details>
+
+    <details class="uc">
+      <summary>Pagar un retiro con verificación de titularidad <span class="tag">information → transfers/cvu → result</span></summary>
+      <div class="body">
+        <ol>
+          <li>Pedí token con <code>/auth/token/client</code> (vale una hora; cacheálo).</li>
+          <li><b>Consultá el titular</b> con <code>/accounts/information</code> y el header <code>x-access-token</code>, mandando <code>cvu</code> o <code>alias</code>.</li>
+          <li><b>Aplicá el gate:</b> si <code>cuit</code> no es el del jugador, cortá acá. Este control lo hace tu billetera — el endpoint devuelve el dato, no la decisión.</li>
+          <li>Verificá saldo operativo con <code>/accounts/balance</code> antes de armar el lote.</li>
+          <li>Despachá con <code>/transfers/cvu</code>. <code>transaction_id</code> de <b>12 caracteres o menos</b>, <code>concept: "VAR"</code>, <code>transaction_count</code> igual al largo de <code>data</code>. Guardá el <code>process_id</code>.</li>
+          <li>Al llegar el callback (o por polling a <code>/processes/status</code>), pedí <code>/processes/{processId}/result</code> y <b>guardá el <code>coelsa_id</code></b> como comprobante.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="uc">
+      <summary>Reaccionar al aviso de cierre de lote <span class="tag">callback_url</span></summary>
+      <div class="body">
+        <ol>
+          <li>Informá <code>callback_url</code> al dar de alta el lote. Tiene que ser pública, aceptar <code>POST</code> y responder para confirmar recepción.</li>
+          <li>El aviso trae los contadores: <code>transaction_success_count</code>, <code>transaction_fail_count</code>, <code>transaction_processed_count</code> y <code>status</code>.</li>
+          <li><b>Usalo sólo como disparador</b> para pedir el resultado detallado. No dice cuál falló ni por qué, y no trae <code>coelsa_id</code>.</li>
+        </ol>
+        <div class="warn"><b>El aviso no viene autenticado.</b> No lo tomes como orden de acreditación: confirmá siempre contra <code>/processes/{processId}/result</code> antes de mover un saldo.</div>
+      </div>
+    </details>
+
+    <details class="uc">
+      <summary>Conciliar y responder un reclamo <span class="tag">result</span></summary>
+      <div class="body">
+        <ol>
+          <li>Con el <code>process_id</code> guardado, pedí <code>/processes/{processId}/result</code>.</li>
+          <li>Cruzá por <code>transaction_id</code>, que es <b>tu</b> identificador y viaja de ida y de vuelta.</li>
+          <li>El detalle trae <code>coelsa_id</code>, <code>cardholder_from</code>/<code>cardholder_to</code>, <code>origin_tax_id</code>/<code>destination_tax_id</code>, <code>amount</code>, <code>datetime</code> y <code>authorization_code</code>. Con eso se responde un «no me llegó».</li>
+        </ol>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2>Diagramas de secuencia</h2>
+
+    <h3 style="margin-top:16px;">Depósito del jugador</h3>
+    <div class="seqwrap">
+      <div class="seq">
+        <div class="actors"><span>Jugador</span><span>Billetera</span><span>Finpro</span><span>Banco / Coelsa</span></div>
+        <div class="lanes" aria-hidden="true"><i style="grid-column:1/2"></i><i style="grid-column:3/4"></i><i style="grid-column:5/6"></i><i style="grid-column:7/8"></i></div>
+        <ol class="msgs">
+          <li><span class="arw back" style="grid-column:2/8"><span class="lb">transfiere al CVU de la casa (fuera de la API)</span></span></li>
+          <li><span class="arw" style="grid-column:2/4"><span class="lb">avisa monto + authorization_code</span></span></li>
+          <li><span class="arw" style="grid-column:4/6"><span class="lb">POST /transfers/verify/incoming</span></span></li>
+          <li><span class="selfm" style="grid-column:5/7">coteja contra las notificaciones recibidas</span></li>
+          <li><span class="arw back" style="grid-column:4/6"><span class="lb">200 · status · matched_by · notification</span></span></li>
+          <li><span class="selfm good" style="grid-column:3/5">acredita y guarda notification.id</span></li>
+          <li><span class="arw back" style="grid-column:2/4"><span class="lb">saldo actualizado</span></span></li>
+        </ol>
+      </div>
+      <p class="seqcap">El paso 3 es consulta, no aviso: si devuelve <code>not_found_yet</code> se reintenta, no se rechaza.</p>
+    </div>
+
+    <h3 style="margin-top:22px;">Retiro del jugador, con gate de titularidad</h3>
+    <div class="seqwrap">
+      <div class="seq">
+        <div class="actors"><span>Jugador</span><span>Billetera</span><span>Finpro</span><span>Banco / Coelsa</span></div>
+        <div class="lanes" aria-hidden="true"><i style="grid-column:1/2"></i><i style="grid-column:3/4"></i><i style="grid-column:5/6"></i><i style="grid-column:7/8"></i></div>
+        <ol class="msgs">
+          <li><span class="arw" style="grid-column:2/4"><span class="lb">pide retiro · carga CVU o alias</span></span></li>
+          <li><span class="arw" style="grid-column:4/6"><span class="lb">POST /auth/token/client</span></span></li>
+          <li><span class="arw back" style="grid-column:4/6"><span class="lb">0200 · token (1 h)</span></span></li>
+          <li><span class="arw" style="grid-column:4/6"><span class="lb">POST /accounts/information · x-access-token</span></span></li>
+          <li><span class="arw back" style="grid-column:4/6"><span class="lb">0100 · nombre · cuit · tipo_persona</span></span></li>
+          <li><span class="selfm hot" style="grid-column:3/5">GATE: si cuit ≠ jugador, no se despacha</span></li>
+          <li><span class="arw" style="grid-column:4/6"><span class="lb">POST /accounts/balance</span></span></li>
+          <li><span class="arw" style="grid-column:4/6"><span class="lb">POST /transfers/cvu · process_id · callback_url</span></span></li>
+          <li><span class="arw back" style="grid-column:4/6"><span class="lb">0201 · lote aceptado (no es pagado)</span></span></li>
+          <li><span class="arw" style="grid-column:6/8"><span class="lb">despacha la transferencia</span></span></li>
+          <li><span class="arw back" style="grid-column:4/6"><span class="lb">POST callback_url · contadores del cierre</span></span></li>
+          <li><span class="arw" style="grid-column:4/6"><span class="lb">POST /processes/{processId}/result</span></span></li>
+          <li><span class="arw back" style="grid-column:4/6"><span class="lb">0200 · coelsa_id · detalle por transacción</span></span></li>
+          <li><span class="arw back" style="grid-column:2/4"><span class="lb">pagado + comprobante</span></span></li>
+        </ol>
+      </div>
+      <p class="seqcap">El paso 6 es el control antifraude: el endpoint devuelve el <code>cuit</code>, la decisión de cortar la toma la billetera.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Referencia de endpoints</h2>
+    <p class="note">Base <code>https://mw-dev.finpro.com.ar</code> · <code>{bankId}</code> = <code>creedence</code> · todas <code>POST</code>.</p>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/auth/token/client</span><span class="codebadge">0200</span></summary>
+      <div class="body">
+        <p><b>Headers:</b> <code>X-API-Key</code>, <code>X-API-Secret</code>, <code>Content-Type: application/json</code>. <b>Body:</b> <code>{}</code>.</p>
+<pre><span class="c">// respuesta</span>
+{ <span class="k">"code"</span>: <span class="s">"0200"</span>, <span class="k">"description"</span>: <span class="s">"ok"</span>,
+  <span class="k">"token"</span>: <span class="s">"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."</span>,
+  <span class="k">"token_type"</span>: <span class="s">"new"</span>, <span class="k">"expires_in"</span>: <span class="n">3600</span>,
+  <span class="k">"expires_in_millis"</span>: <span class="n">3600000</span>,
+  <span class="k">"utcnow"</span>: <span class="s">"Fri, 06 Mar 2026 20:05:39 GMT"</span> }</pre>
+        <p class="note">Sólo lo consume <code>/accounts/information</code>.</p>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/accounts/balance</span><span class="codebadge">2200</span></summary>
+      <div class="body">
+        <p><b>Headers:</b> credenciales + <code>platform-id</code> (opcional).</p>
+<pre><span class="c">// request</span>
+{ <span class="k">"account"</span>: <span class="s">"564734514"</span>, <span class="k">"trace"</span>: <span class="s">"174129300001"</span>, <span class="k">"retrieval"</span>: <span class="s">"BAL20260306A"</span> }
+
+<span class="c">// respuesta</span>
+{ <span class="k">"code"</span>: <span class="s">"2200"</span>, <span class="k">"request_id"</span>: <span class="s">"20260306181326636152"</span>,
+  <span class="k">"data"</span>: { <span class="k">"authorization_code"</span>: <span class="s">"884865"</span>, <span class="k">"available_for_purchases"</span>: <span class="n">9967</span>,
+            <span class="k">"balance"</span>: <span class="n">0</span>, <span class="k">"reserve_balance"</span>: <span class="n">0</span>, <span class="c">/* … */</span> } }</pre>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/accounts/information</span><span class="codebadge">0100</span></summary>
+      <div class="body">
+        <p><b>Headers:</b> credenciales + <code>x-access-token</code> (el <code>token</code> de auth) + <code>platform-id</code> opcional. <b>Body:</b> al menos uno de <code>cvu</code> o <code>alias</code>, string no vacío.</p>
+<pre><span class="c">// request</span>
+{ <span class="k">"cvu"</span>: <span class="s">"0000003100011447615683"</span> }   <span class="c">// o { "alias": "cuenta.mp" }</span>
+
+<span class="c">// respuesta</span>
+{ <span class="k">"code"</span>: <span class="s">"0100"</span>, <span class="k">"description"</span>: <span class="s">"ALIAS ENCONTRADO"</span>,
+  <span class="k">"nombre"</span>: <span class="s">"Nombre Completo Del Titular"</span>, <span class="k">"cuit"</span>: <span class="s">"20204932388"</span>,
+  <span class="k">"cvu"</span>: <span class="s">"0000003100011447615683"</span>, <span class="k">"alias"</span>: <span class="s">"cuenta.mp"</span>,
+  <span class="k">"tipo_persona"</span>: <span class="s">"F"</span>, <span class="k">"request_id"</span>: <span class="s">"20260506161618655401"</span> }</pre>
+        <div class="warn"><b>Respuesta no normalizada:</b> es el cuerpo de Coelsa tal cual, así que el contrato puede cambiar sin aviso. Y <b>no compara contra la identidad del jugador</b>: esa regla la aplicás vos con el <code>cuit</code>.</div>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/transfers/cvu</span><span class="codebadge">0201</span></summary>
+      <div class="body">
+<pre><span class="c">// request</span>
+{ <span class="k">"callback_url"</span>: <span class="s">"https://su-endpoint-publico.com/webhook"</span>,
+  <span class="k">"process_id"</span>: <span class="s">"660e8400-e29b-41d4-a716-446655440001"</span>,
+  <span class="k">"transaction_count"</span>: <span class="n">1</span>,
+  <span class="k">"initial_datetime"</span>: <span class="s">"2026-03-06T17:15:00-03:00"</span>,
+  <span class="k">"data"</span>: [ { <span class="k">"transaction_id"</span>: <span class="s">"TX000000002"</span>,
+             <span class="k">"from_cvu"</span>: <span class="s">"0000151500034514227129"</span>,
+             <span class="k">"to_cvu"</span>: <span class="s">"0000151500034526227120"</span>,
+             <span class="k">"amount"</span>: <span class="n">10.00</span>, <span class="k">"concept"</span>: <span class="s">"VAR"</span>,
+             <span class="k">"description"</span>: <span class="s">"Prueba cliente autenticado"</span> } ] }
+
+<span class="c">// respuesta</span>
+{ <span class="k">"code"</span>: <span class="s">"0201"</span>, <span class="k">"process_id"</span>: <span class="s">"660e8400-…"</span>,
+  <span class="k">"request_id"</span>: <span class="s">"20260306171250699455"</span>, <span class="k">"transaction_count"</span>: <span class="n">1</span> }</pre>
+        <p><b>Validaciones:</b> <code>process_id</code> único · <code>transaction_count</code> = largo de <code>data</code> · <code>transaction_id</code> ≤ 12 caracteres · <code>concept: "VAR"</code> para transferencias generales.</p>
+        <div class="warn"><b>Acá todavía no hay <code>coelsa_id</code></b>, y la documentación no define el comportamiento ante un <code>process_id</code> repetido. Resolvé la idempotencia de tu lado.</div>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/processes/status</span><span class="codebadge">0200</span></summary>
+      <div class="body">
+<pre><span class="c">// request</span>
+{ <span class="k">"process_ids"</span>: [ <span class="s">"660e8400-e29b-41d4-a716-446655440001"</span> ] }
+
+<span class="c">// respuesta · data[]</span>
+{ <span class="k">"process_id"</span>: <span class="s">"660e8400-…"</span>, <span class="k">"status"</span>: <span class="s">"finished"</span>,
+  <span class="k">"transaction_count"</span>: <span class="n">1</span>, <span class="k">"transaction_success_count"</span>: <span class="n">1</span>,
+  <span class="k">"transaction_fail_count"</span>: <span class="n">0</span>, <span class="k">"transaction_processed_count"</span>: <span class="n">1</span>,
+  <span class="k">"process_initial_datetime"</span>: <span class="s">"2026-03-23T13:29:44.819Z"</span>,
+  <span class="k">"process_ending_datetime"</span>: <span class="s">"2026-03-23T13:29:45.034Z"</span> }</pre>
+        <p class="note">Contadores y estado del lote. <b>No incluye <code>coelsa_id</code>.</b></p>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/processes/{processId}/result</span><span class="codebadge">0200</span></summary>
+      <div class="body">
+        <p><b>Body:</b> <code>{}</code>. Es la <b>única fuente del <code>coelsa_id</code></b>.</p>
+<pre><span class="c">// respuesta · data[]</span>
+{ <span class="k">"coelsa_id"</span>: <span class="s">"R7ZG0QNDWKMQLRPG9EXYPO"</span>,
+  <span class="k">"response_code"</span>: <span class="s">"0200"</span>, <span class="k">"transfer_type"</span>: <span class="s">"S"</span>,
+  <span class="k">"amount"</span>: <span class="s">"100.00"</span>, <span class="k">"datetime"</span>: <span class="s">"2026-03-20 12:20:24"</span>,
+  <span class="k">"cbu_from"</span>: <span class="s">"0000151500033224203142"</span>,
+  <span class="k">"cbu_to"</span>: <span class="s">"0140000701100088139728"</span>,
+  <span class="k">"origin_tax_id"</span>: <span class="s">"30717039501"</span>, <span class="k">"destination_tax_id"</span>: <span class="s">"20987654321"</span>,
+  <span class="k">"cardholder_from"</span>: <span class="s">"EMPRESA EJEMPLO SRL"</span>, <span class="k">"cardholder_to"</span>: <span class="s">"MARIA GONZALEZ"</span>,
+  <span class="k">"authorization_code"</span>: <span class="s">"358164"</span>, <span class="k">"transaction_id"</span>: <span class="s">"TX000000002"</span>,
+  <span class="k">"notification_type"</span>: <span class="s">"CT"</span>, <span class="k">"concept"</span>: <span class="s">"VAR"</span> }</pre>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">/api/banks/{bankId}/transfers/verify/incoming</span><span class="codebadge">confirmed</span></summary>
+      <div class="body">
+        <p><b>Reglas mínimas:</b> un identificador fuerte (<code>coelsa_id</code> o <code>authorization_code</code>), <b>o</b> <code>amount</code> con ventana temporal y/o CVU/cuenta.</p>
+        <p><b>Campos admitidos:</b> <code>coelsa_id</code>, <code>authorization_code</code>, <code>amount</code>, <code>occurred_at</code>, <code>window_minutes</code>, <code>occurred_from</code>, <code>occurred_to</code>, <code>from_cvu</code>, <code>to_cvu</code>, <code>from_account</code>, <code>to_account</code>, <code>origin_tax_id</code>, <code>destination_tax_id</code>, <code>document</code>.</p>
+<pre><span class="c">// respuesta confirmed</span>
+{ <span class="k">"status"</span>: <span class="s">"confirmed"</span>, <span class="k">"matched_by"</span>: <span class="s">"authorization_code"</span>,
+  <span class="k">"confidence"</span>: <span class="s">"exact"</span>,
+  <span class="k">"notification"</span>: { <span class="k">"id"</span>: <span class="n">2249212</span>, <span class="k">"bank_id"</span>: <span class="s">"creedence"</span>,
+      <span class="k">"webhook_type"</span>: <span class="s">"cbu_transfers"</span>, <span class="k">"amount"</span>: <span class="s">"10.00"</span>,
+      <span class="k">"received_at"</span>: <span class="s">"2026-03-09T18:39:39.488Z"</span> },
+  <span class="k">"matches"</span>: [ { <span class="k">"id"</span>: <span class="n">2249212</span>, <span class="k">"amount"</span>: <span class="s">"10.00"</span> } ],
+  <span class="k">"searched_scope"</span>: { <span class="k">"attempted_strategies"</span>: [ <span class="s">"authorization_code"</span> ] } }</pre>
+        <p><b><code>status</code>:</b> <code>confirmed</code> · <code>not_found_yet</code> (no es rechazo) · <code>ambiguous</code> (hace falta otro dato).<br>
+           <b><code>matched_by</code>:</b> <code>coelsa_id</code> · <code>authorization_code</code> · <code>amount_date_cvu</code> · <code>amount_date_account</code> · <code>document</code>.<br>
+           <b><code>confidence</code>:</b> <code>exact</code> · <code>high</code> · <code>medium</code>.</p>
+        <div class="warn"><b>No cubre reversas.</b> Valida entrantes acreditadas; no devuelve <code>reversed</code> ni cubre <code>revct</code>, y no resuelve los ambiguos por su cuenta.</div>
+      </div>
+    </details>
+
+    <details class="epw">
+      <summary><span class="verb">POST</span><span class="path">callback_url (tu endpoint)</span><span class="codebadge">aviso</span></summary>
+      <div class="body">
+        <p>Debe ser pública, aceptar <code>POST</code> y responder para confirmar recepción.</p>
+<pre>{ <span class="k">"process_id"</span>: <span class="s">"770e8400-e29b-41d4-a716-446655440002"</span>,
+  <span class="k">"transaction_count"</span>: <span class="n">1</span>, <span class="k">"transaction_success_count"</span>: <span class="n">1</span>,
+  <span class="k">"transaction_fail_count"</span>: <span class="n">0</span>, <span class="k">"transaction_processed_count"</span>: <span class="n">1</span>,
+  <span class="k">"process_initial_date"</span>: <span class="s">"2026-03-09 15:20:41.752000"</span>,
+  <span class="k">"process_ending_time"</span>: <span class="s">"2026-03-09 15:20:41.968000"</span>,
+  <span class="k">"status"</span>: <span class="s">"finished"</span> }</pre>
+        <div class="warn"><b>Contadores, no detalle.</b> No dice cuál falló ni por qué, y no trae <code>coelsa_id</code>. Usalo como disparador, nunca como orden de acreditación.</div>
+      </div>
+    </details>
+  </section>
+
+  <section>
+    <h2>Códigos y errores</h2>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Código</th><th>Dónde aparece</th><th>Significa</th></tr></thead>
+        <tbody>
+          <tr><td>0200</td><td>auth · processes/status · result</td><td>Operación exitosa.</td></tr>
+          <tr><td>2200</td><td>accounts/balance</td><td>Saldo devuelto.</td></tr>
+          <tr><td>0201</td><td>transfers/cvu</td><td>Lote aceptado para procesamiento. <b>No es pagado.</b></td></tr>
+          <tr><td>0100</td><td>accounts/information</td><td><code>ALIAS ENCONTRADO</code> — titularidad resuelta (código de Coelsa).</td></tr>
+          <tr><td>HTTP 400</td><td>verify/incoming</td><td>Request insuficiente, fecha inválida, <code>amount</code> inválido o <code>window_minutes</code> fuera de rango.</td></tr>
+          <tr><td>HTTP 401</td><td>todos</td><td>Credenciales inválidas o cliente inactivo.</td></tr>
+          <tr><td>HTTP 403</td><td>verify/incoming</td><td>El cliente no tiene el permiso <code>movements</code>.</td></tr>
+          <tr><td>HTTP 500</td><td>todos</td><td>Error interno del middleware.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="warn" style="margin-top:14px;"><b>No hay catálogo publicado de rechazos por transacción.</b> Saldo insuficiente, CVU inexistente o límite excedido todavía no se distinguen entre sí, así que la billetera no puede explicarle al jugador por qué falló un retiro.</div>
+  </section>
+
+  <a class="back" href="casino-wallet.html">← Volver a Casino Wallet</a>
+
+  <footer>
+    <div class="d">Reconstruido a partir de la Guía de Integración v1.2 y la Guía Técnica de Verificación de Transferencias v1.0 de Finpro (última actualización 2026-03-16). Los ejemplos son los de la documentación del proveedor. Material de alcance técnico: no constituye asesoría legal ni de inversión.</div>
+    <div class="badge" style="width:30px;height:30px;border-radius:8px;">
+      <svg width="19" height="19" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M22.5 9.2c-1.6-1.6-4-2.5-6.6-2.5-4.1 0-7 2.2-7 5.2 0 3 2.4 4.3 6.4 5.1 3.1.6 4.2 1.1 4.2 2.3 0 1.2-1.4 2-3.6 2-2.2 0-4-.9-5.3-2.3" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.3" cy="8.2" r="2.1" fill="#8ff0ea"/><circle cx="8.2" cy="23.6" r="2.1" fill="#8ff0ea"/></svg>
+    </div>
+  </footer>
+</div>
+<script>
+  (function(){
+    var root=document.documentElement, btn=document.getElementById('tgl');
+    btn.addEventListener('click',function(){
+      var cur=root.getAttribute('data-theme');
+      if(!cur){ cur=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+      root.setAttribute('data-theme', cur==='dark'?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>
